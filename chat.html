@@ -14,7 +14,7 @@
         .ai { background: #333; align-self: flex-start; }
         .input-area { background: #1a1a1a; padding: 10px; display: flex; gap: 10px; align-items: center; }
         input[type="text"] { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #444; background: #000; color: white; outline: none; }
-        .btn { background: #800000; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+        .btn { background: #800000; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; border: none !important; }
     </style>
 </head>
 <body>
@@ -25,13 +25,12 @@
             <label for="file-input" class="btn">+</label>
             <input type="file" id="file-input" style="display:none;" onchange="addMessage('Image selected!', 'user')">
             <input type="text" id="user-input" placeholder="Ask Retag AI...">
-            <button class="btn" onclick="sendMessage()">➤</button>
+            <button class="btn" id="send-btn" onclick="sendMessage()">➤</button>
         </div>
     </div>
 
     <script>
         const chatWindow = document.getElementById('chat-window');
-        // المفتاح الجديد اللي بعتيه حطيته هنا
         const API_KEY = "AIzaSyD2arr95aCTIULq4F3zr-EswuXU-pVspcU"; 
 
         function addMessage(text, sender) {
@@ -46,8 +45,36 @@
             const input = document.getElementById('user-input');
             const text = input.value.trim();
             if (!text) return;
+            
             addMessage(text, 'user');
             input.value = "";
 
             try {
-                const response = await
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
+                });
+                
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content) {
+                    addMessage(data.candidates[0].content.parts[0].text, 'ai');
+                } else {
+                    addMessage("أنا شغال يا ريتاج، اسألي أي حاجة!", "ai");
+                }
+            } catch (e) {
+                addMessage("فيه مشكلة في الشبكة، جربي تاني.", "ai");
+            }
+        }
+
+        // إضافة ميزة الإرسال عند الضغط على Enter
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        window.onload = () => addMessage("Retag AI is ready! Type something.", "ai");
+    </script>
+</body>
+</html>
