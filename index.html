@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع ريتاج المطور</title>
+    <title>RetaggFlow Pro</title>
     <style>
         :root {
             --bg: #ffffff;
@@ -11,116 +11,72 @@
             --primary: #1a73e8;
             --card: #f9f9f9;
         }
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #ffffff;
+            --card: #1e1e1e;
+        }
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            scroll-behavior: smooth;
+            transition: 0.3s;
         }
-        /* شريط التنقل */
         nav {
             background: var(--primary);
             padding: 1rem;
             position: sticky;
             top: 0;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
             z-index: 1000;
         }
-        nav a {
+        nav .links a {
             color: white;
             text-decoration: none;
+            margin: 0 15px;
             font-weight: bold;
         }
-        /* الأقسام */
-        section {
-            padding: 80px 20px;
-            text-align: center;
-            min-height: 40vh;
+        .theme-toggle, .login-btn {
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            font-weight: bold;
         }
-        .hero {
-            background: linear-gradient(rgba(26,115,232,0.1), rgba(26,115,232,0.1));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .card-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        .card {
+        section { padding: 80px 20px; text-align: center; }
+        .hero { background: rgba(26,115,232,0.1); }
+        .login-box {
             background: var(--card);
-            padding: 20px;
-            border-radius: 10px;
-            width: 250px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 350px;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        footer {
-            background: #222;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .btn {
-            background: var(--primary);
-            color: white;
-            padding: 10px 25px;
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
             border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
+            border: 1px solid #ccc;
         }
+        .btn { background: var(--primary); color: white; padding: 10px 25px; border-radius: 5px; text-decoration: none; border:none; width: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#home">الرئيسية</a>
-        <a href="#about">من نحن</a>
-        <a href="#services">خدماتنا</a>
-        <a href="#contact">تواصل معنا</a>
+        <div class="links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+        </div>
+        <div>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Mode</button>
+        </div>
     </nav>
 
     <section id="home" class="hero">
-        <h1>أهلاً بيكِ في موقع ريتاج 👋</h1>
-        <p>الموقع مفتوح الآن وجاهز للتصفح</p>
-        <a href="#about" class="btn">ابدأ الجولة</a>
-    </section>
-
-    <section id="about">
-        <h2>👤 من نحن</h2>
-        <p>أنا ريتاج، مبرمجة طموحة وده أول مشروع ليا يتم رفعه بالكامل على GitHub Pages.</p>
-    </section>
-
-    <section id="services" style="background: #f1f1f1;">
-        <h2>🛠️ خدماتنا</h2>
-        <div class="card-container">
-            <div class="card">
-                <h3>تصميم المواقع</h3>
-                <p>بناء واجهات مستخدم جذابة وسهلة الاستخدام.</p>
-            </div>
-            <div class="card">
-                <h3>تطوير الكود</h3>
-                <p>كتابة كود نظيف ومنظم باستخدام أحدث التقنيات.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>📞 تواصل معنا</h2>
-        <p>تقدري تضيفي هنا لينكات السوشيال ميديا بتاعتك</p>
-        <a href="mailto:your-email@example.com" class="btn">إرسال إيميل</a>
-    </section>
-
-    <footer>
-        <p>حقوق النشر © 2026 - تم التطوير بواسطة ريتاج</p>
-    </footer>
-
-</body>
-</html>
+        <h1>Welcome to RetaggFlow</h1>
