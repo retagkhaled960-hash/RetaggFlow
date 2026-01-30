@@ -3,71 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retag AI Premium</title>
+    <title>Retag AI - Dark Mode</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #faedcd; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .chat-container { width: 90%; max-width: 400px; height: 85vh; background: white; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 25px; overflow: hidden; border: 2px solid #d4a373; }
-        .chat-header { background: #d4a373; color: white; padding: 20px; text-align: left; display: flex; align-items: center; gap: 10px; }
-        .status-dot { width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; border: 2px solid white; }
-        #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #fdfaf3; }
-        .message { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 14px; line-height: 1.4; position: relative; }
-        .user { background: #d4a373; color: white; align-self: flex-end; border-bottom-right-radius: 5px; }
-        .ai { background: #e9ecef; color: #333; align-self: flex-start; border-bottom-left-radius: 5px; }
-        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #eee; }
-        input { flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #d4a373; }
-        button { background: #d4a373; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.3s; }
-        button:hover { transform: scale(1.1); background: #bc8a5f; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-container { width: 90%; max-width: 400px; height: 85vh; background: #000; display: flex; flex-direction: column; border-radius: 25px; overflow: hidden; border: 2px solid #800000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .chat-header { background: #800000; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .status-dot { width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0c0c0c; }
+        .message { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 14px; color: white; line-height: 1.4; }
+        .user { background: #800000; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .ai { background: #333; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .media-content { max-width: 100%; border-radius: 10px; margin-top: 5px; }
+        .input-area { background: #1a1a1a; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; align-items: center; }
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #444; border-radius: 25px; background: #000; color: white; outline: none; }
+        .btn-action { background: #800000; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        #file-input { display: none; }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <div class="status-dot"></div>
-            <div>
-                <div style="font-size: 16px;">Retag AI Assistant</div>
-                <div style="font-size: 10px; opacity: 0.8;">Online | Active Now</div>
-            </div>
+            <div><span class="status-dot"></span> <b>Retag AI</b></div>
+            <button onclick="clearChat()" style="background:none; border:none; color:white; font-size:10px; cursor:pointer;">Clear History</button>
         </div>
-        <div id="chat-window">
-            <div class="message ai">Welcome! I'm your smart assistant. How can I help you today?</div>
-        </div>
+        <div id="chat-window"></div>
         <div class="input-area">
-            <input type="text" id="user-input" placeholder="Ask me anything...">
-            <button onclick="sendMessage()">➤</button>
+            <label for="file-input" class="btn-action">+</label>
+            <input type="file" id="file-input" accept="image/*,video/*" onchange="handleFile(event)">
+            <input type="text" id="user-input" placeholder="Ask Retag...">
+            <button class="btn-action" onclick="sendMessage()">➤</button>
         </div>
     </div>
 
     <script>
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const chatWindow = document.getElementById('chat-window');
-            if (input.value.trim() === "") return;
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('user-input');
 
-            // رسالة المستخدم
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.innerText = input.value;
-            chatWindow.appendChild(userMsg);
+        // تحميل المحادثة القديمة عند فتح الصفحة
+        window.onload = () => {
+            const savedChat = localStorage.getItem('retag_chat_history');
+            if (savedChat) {
+                chatWindow.innerHTML = savedChat;
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            } else {
+                addMessage("Hello! I'm your Dark AI. I remember our chats and can see your photos!", 'ai');
+            }
+        };
 
-            // جاري التفكير...
-            const typingMsg = document.createElement('div');
-            typingMsg.className = 'message ai';
-            typingMsg.innerText = "...";
-            typingMsg.id = "typing";
-            chatWindow.appendChild(typingMsg);
+        function addMessage(text, sender, isMedia = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
+            msgDiv.innerHTML = text;
+            chatWindow.appendChild(msgDiv);
             chatWindow.scrollTop = chatWindow.scrollHeight;
+            localStorage.setItem('retag_chat_history', chatWindow.innerHTML);
+        }
+
+        function sendMessage() {
+            if (userInput.value.trim() === "") return;
+            addMessage(userInput.value, 'user');
+            const val = userInput.value;
+            userInput.value = "";
 
             setTimeout(() => {
-                document.getElementById('typing').remove();
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message ai';
-                aiMsg.innerText = "I am processing your request. Soon I will be connected to Retag's server!";
-                chatWindow.appendChild(aiMsg);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-            }, 1500);
+                addMessage("I'm analyzing that... My memory is active!", 'ai');
+            }, 1000);
+        }
 
-            input.value = "";
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let content = "";
+                if (file.type.startsWith('image/')) {
+                    content = `<img src="${e.target.result}" class="media-content">`;
+                } else {
+                    content = `<video src="${e.target.result}" controls class="media-content"></video>`;
+                }
+                addMessage(content, 'user');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearChat() {
+            if(confirm("Delete all history?")) {
+                localStorage.removeItem('retag_chat_history');
+                chatWindow.innerHTML = "";
+                addMessage("History cleared.", 'ai');
+            }
         }
     </script>
 </body>
