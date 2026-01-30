@@ -9,63 +9,11 @@
         .chat-container { width: 95%; max-width: 400px; height: 90vh; background: #000; display: flex; flex-direction: column; border-radius: 20px; border: 2px solid #800000; overflow: hidden; }
         .chat-header { background: #800000; color: white; padding: 15px; text-align: center; font-weight: bold; }
         #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #0c0c0c; color: white; }
-        .message { padding: 10px 15px; border-radius: 15px; max-width: 80%; }
+        .message { padding: 10px 15px; border-radius: 15px; max-width: 80%; word-wrap: break-word; }
         .user { background: #800000; align-self: flex-end; }
         .ai { background: #333; align-self: flex-start; }
         .input-area { background: #1a1a1a; padding: 10px; display: flex; gap: 10px; }
         input { flex: 1; padding: 10px; border-radius: 20px; border: none; background: #000; color: white; outline: none; }
-        button { background: #800000; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        button { background: #800000; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px; }
     </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="chat-header">Retag AI</div>
-        <div id="chat-window"></div>
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Ask Retag AI...">
-            <button onclick="sendMessage()">➤</button>
-        </div>
-    </div>
-
-    <script>
-        const chatWindow = document.getElementById('chat-window');
-        const API_KEY = "AIzaSyBX6NGNI_jcj6az8Zay-N-VgTyrvevEJkY"; 
-
-        function addMessage(text, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${sender}`;
-            msgDiv.innerText = text;
-            chatWindow.appendChild(msgDiv);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            if (!text) return;
-            addMessage(text, 'user');
-            input.value = "";
-
-            try {
-                // استخدام v1beta مع gemini-1.5-flash هو الحل الأكيد للمفتاح ده
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
-                });
-                
-                const data = await response.json();
-                
-                if (data.candidates && data.candidates[0].content) {
-                    addMessage(data.candidates[0].content.parts[0].text, 'ai');
-                } else {
-                    addMessage("جربي دلوقتي، المفتاح اتفعل خلاص.", "ai");
-                }
-            } catch (e) {
-                addMessage("حصل خطأ بسيط، جربي تاني.", "ai");
-            }
-        }
-        window.onload = () => addMessage("Retag AI is ready!", "ai");
-    </script>
-</body>
-</html>
+</
