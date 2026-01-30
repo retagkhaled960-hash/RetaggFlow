@@ -1,108 +1,126 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>RetagFlow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg:#ffffff;
-      --text:#222;
-      --card:#f5f5f5;
-      --btn:#1a73e8;
-    }
-    body.dark {
-      --bg:#121212;
-      --text:#fff;
-      --card:#1e1e1e;
-      --btn:#8ab4f8;
-    }
-    body {
-      margin:0;
-      font-family:'Inter',sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      transition:0.4s;
-    }
-    .card{
-      background:var(--card);
-      padding:30px;
-      border-radius:16px;
-      width:320px;
-      box-shadow:0 10px 30px rgba(0,0,0,.15);
-      animation:fade 0.6s ease;
-      text-align:center;
-    }
-    @keyframes fade {
-      from {opacity:0; transform:translateY(20px);}
-      to {opacity:1; transform:translateY(0);}
-    }
-    input{
-      width:100%;
-      padding:12px;
-      margin-bottom:12px;
-      border-radius:10px;
-      border:none;
-      outline:none;
-    }
-    button{
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:var(--btn);
-      color:white;
-      font-weight:600;
-      cursor:pointer;
-    }
-    .toggle{
-      margin-top:10px;
-      cursor:pointer;
-      font-size:14px;
-    }
-    .home{display:none;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع ريتاج المطور</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #222;
+            --primary: #1a73e8;
+            --card: #f9f9f9;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            scroll-behavior: smooth;
+        }
+        /* شريط التنقل */
+        nav {
+            background: var(--primary);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* الأقسام */
+        section {
+            padding: 80px 20px;
+            text-align: center;
+            min-height: 40vh;
+        }
+        .hero {
+            background: linear-gradient(rgba(26,115,232,0.1), rgba(26,115,232,0.1));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        footer {
+            background: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div class="card" id="loginBox">
-    <h1>RetagFlow</h1>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <div class="toggle" onclick="toggleMode()">🌙 Dark / ☀️ Light</div>
-  </div>
+    <nav>
+        <a href="#home">الرئيسية</a>
+        <a href="#about">من نحن</a>
+        <a href="#services">خدماتنا</a>
+        <a href="#contact">تواصل معنا</a>
+    </nav>
 
-  <!-- HOME -->
-  <div class="card home" id="homeBox">
-    <h1>أهلًا بيك 👋</h1>
-    <p>الموقع مفتوح لأي زائر</p>
-    <button onclick="logout()">Logout</button>
-  </div>
+    <section id="home" class="hero">
+        <h1>أهلاً بيكِ في موقع ريتاج 👋</h1>
+        <p>الموقع مفتوح الآن وجاهز للتصفح</p>
+        <a href="#about" class="btn">ابدأ الجولة</a>
+    </section>
 
-  <script>
-    function login(){
-      // لو عايزة Firebase Login، هتحطي الكود هنا
-      loginBox.style.display="none";
-      homeBox.style.display="block";
-    }
-    function logout(){
-      homeBox.style.display="none";
-      loginBox.style.display="block";
-    }
-    function toggleMode(){
-      document.body.classList.toggle("dark");
-    }
-  </script>
+    <section id="about">
+        <h2>👤 من نحن</h2>
+        <p>أنا ريتاج، مبرمجة طموحة وده أول مشروع ليا يتم رفعه بالكامل على GitHub Pages.</p>
+    </section>
+
+    <section id="services" style="background: #f1f1f1;">
+        <h2>🛠️ خدماتنا</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>تصميم المواقع</h3>
+                <p>بناء واجهات مستخدم جذابة وسهلة الاستخدام.</p>
+            </div>
+            <div class="card">
+                <h3>تطوير الكود</h3>
+                <p>كتابة كود نظيف ومنظم باستخدام أحدث التقنيات.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>📞 تواصل معنا</h2>
+        <p>تقدري تضيفي هنا لينكات السوشيال ميديا بتاعتك</p>
+        <a href="mailto:your-email@example.com" class="btn">إرسال إيميل</a>
+    </section>
+
+    <footer>
+        <p>حقوق النشر © 2026 - تم التطوير بواسطة ريتاج</p>
+    </footer>
 
 </body>
 </html>
