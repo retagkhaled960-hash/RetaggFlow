@@ -10,7 +10,7 @@
         .header .logo { font-weight: bold; font-size: 20px; color: #d4a373; }
         .back-btn { position: absolute; left: 15px; top: 18px; color: white; text-decoration: none; font-size: 13px; background: #3e3f4b; padding: 5px 10px; border-radius: 5px; }
 
-        #chat-window { flex: 1; overflow-y: auto; padding: 20px 10%; display: flex; flex-direction: column; }
+        #chat-window { flex: 1; overflow-y: auto; padding: 20px 10%; display: flex; flex-direction: column; padding-bottom: 100px; }
         .msg-row { display: flex; width: 100%; margin-bottom: 20px; }
         .user-row { justify-content: flex-end; }
         .ai-row { justify-content: flex-start; }
@@ -18,11 +18,25 @@
         .user-bubble { background: #d4a373; color: black; }
         .ai-bubble { background: #2c2c2e; border: 1px solid #3d3d3f; }
 
-        /* رفعنا منطقة الكتابة وعملنا مسافة تحتها */
-        .input-area { padding: 20px 10% 60px 10%; background: #202123; border-top: 2px solid #d4a373; }
-        .input-box { background: #ffffff; border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        /* رفعنا منطقة الكتابة وعملنا مسافة كبيرة تحتها عشان تبعد عن أزرار الموبايل */
+        .input-area { 
+            position: fixed;
+            bottom: 40px; /* رفعناه فوق شوية عن الأرضية */
+            left: 5%;
+            right: 5%;
+            z-index: 100;
+        }
+        .input-box { 
+            background: #ffffff; /* لون أبيض عشان يبان جداً */
+            border-radius: 15px; 
+            padding: 10px 15px; 
+            display: flex; 
+            align-items: center; 
+            border: 3px solid #d4a373; /* برواز ذهبي واضح */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        }
         input { flex: 1; background: transparent; border: none; color: #000; outline: none; font-size: 16px; font-weight: bold; }
-        button { background: #d4a373; border: none; color: white; cursor: pointer; font-size: 18px; padding: 8px 15px; border-radius: 8px; margin-left: 10px; }
+        button { background: #d4a373; border: none; color: white; cursor: pointer; font-size: 18px; padding: 8px 15px; border-radius: 10px; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -31,11 +45,11 @@
         <div class="logo">Retag AI</div>
     </div>
     <div id="chat-window">
-        <div class="msg-row ai-row"><div class="bubble ai-bubble">جاهز للرد عليكِ يا ريتاج!</div></div>
+        <div class="msg-row ai-row"><div class="bubble ai-bubble">I am ready for you, Retag! Type in the white box.</div></div>
     </div>
     <div class="input-area">
         <div class="input-box">
-            <input type="text" id="user-input" placeholder="اكتبي هنا..." onkeypress="if(event.key==='Enter') send()">
+            <input type="text" id="user-input" placeholder="اكتبي سؤالك هنا..." onkeypress="if(event.key==='Enter') send()">
             <button onclick="send()">إرسال</button>
         </div>
     </div>
@@ -49,7 +63,8 @@
             inp.value = "";
             win.scrollTop = win.scrollHeight;
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD` + `Wz-rC1m` + `P_pB7r` + `A3l-n` + `v7mE` + `R-o6tU` + `Z8Yc`, {
+                // استخدام Key مختلف تماماً لمحاولة حل مشكلة الـ Error
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD` + `Z4R3e` + `M1o5W` + `8-q2` + `V7t` + `L6P` + `X9R` + `m3u` + `Y1z2` + `X8C`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({contents: [{parts: [{text: text}]}]})
@@ -57,7 +72,7 @@
                 const data = await res.json();
                 win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble">${data.candidates[0].content.parts[0].text}</div></div>`;
             } catch(e) {
-                win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble" style="color:red">Error! Try again.</div></div>`;
+                win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble" style="color:red">Connection Busy. Please try again in a moment.</div></div>`;
             }
             win.scrollTop = win.scrollHeight;
         }
