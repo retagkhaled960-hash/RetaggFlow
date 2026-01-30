@@ -58,7 +58,7 @@
                 if (data.candidates && data.candidates[0].content) {
                     addMessage(data.candidates[0].content.parts[0].text, 'ai');
                 } else {
-                    addMessage("I'm awake now! How can I help?", "ai");
+                    addMessage("I'm awake! Ask me anything.", "ai");
                 }
             } catch (e) {
                 addMessage("Connection error. Try again!", "ai");
