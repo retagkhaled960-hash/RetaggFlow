@@ -7,7 +7,8 @@
     <style>
         body { font-family: sans-serif; background-color: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .chat-container { width: 95%; max-width: 400px; height: 90vh; background: #000; display: flex; flex-direction: column; border-radius: 20px; border: 2px solid #800000; overflow: hidden; }
-        .chat-header { background: #800000; color: white; padding: 15px; text-align: center; font-weight: bold; }
+        .chat-header { background: #800000; color: white; padding: 15px; text-align: center; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .online-dot { width: 10px; height: 10px; background-color: #00ff00; border-radius: 50%; box-shadow: 0 0 8px #00ff00; }
         #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #0c0c0c; color: white; }
         .message { padding: 10px 15px; border-radius: 15px; max-width: 80%; word-wrap: break-word; }
         .user { background: #800000; align-self: flex-end; }
@@ -19,7 +20,10 @@
 </head>
 <body>
     <div class="chat-container">
-        <div class="chat-header">Retag AI</div>
+        <div class="chat-header">
+            <div class="online-dot"></div>
+            Retag AI
+        </div>
         <div id="chat-window"></div>
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Ask Retag AI...">
@@ -55,14 +59,15 @@
                 
                 const data = await response.json();
                 
-                // التعديل هنا: هيعرض رد الذكاء الاصطناعي الحقيقي
                 if (data.candidates && data.candidates[0].content) {
                     addMessage(data.candidates[0].content.parts[0].text, 'ai');
+                } else if (data.error) {
+                    addMessage("جوجل بتقول: " + data.error.message, "ai");
                 } else {
-                    addMessage("جوجل استلمت بس مش عارفة تبعت نص، جربي تاني.", "ai");
+                    addMessage("مفيش رد حالياً، جربي تكتبي جملة تانية.", "ai");
                 }
             } catch (e) {
-                addMessage("مشكلة في الشبكة، جربي تاني.", "ai");
+                addMessage("مشكلة في الشبكة، جربي تعملي Refresh.", "ai");
             }
         }
         window.onload = () => addMessage("Retag AI is ready!", "ai");
