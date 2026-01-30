@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retag AI Chat</title>
+    <style>
+        body { font-family: sans-serif; background-color: #faedcd; display: flex; flex-direction: column; height: 100vh; margin: 0; }
+        .chat-header { background: #d4a373; color: white; padding: 20px; text-align: center; font-weight: bold; }
+        #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message { padding: 10px 15px; border-radius: 15px; max-width: 70%; }
+        .user { background: #d4a373; color: white; align-self: flex-end; }
+        .ai { background: white; color: #333; align-self: flex-start; border: 1px solid #d4a373; }
+        .input-area { background: white; padding: 20px; display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #d4a373; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="chat-header">Retag AI Assistant 🤖</div>
+    <div id="chat-window">
+        <div class="message ai">Hello! I am Retag's AI. How can I help you today?</div>
+    </div>
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const window = document.getElementById('chat-window');
+            if (input.value.trim() === "") return;
+
+            // رسالة المستخدم
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerText = input.value;
+            window.appendChild(userMsg);
+
+            // رد مؤقت من الـ AI (هنربطه بذكاء حقيقي لاحقاً)
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'message ai';
+                aiMsg.innerText = "I'm thinking... (Connecting to Retag's Brain)";
+                window.appendChild(aiMsg);
+                window.scrollTop = window.scrollHeight;
+            }, 1000);
+
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
