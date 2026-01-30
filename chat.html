@@ -2,49 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Retag AI Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retag AI Premium</title>
     <style>
-        body { font-family: sans-serif; background-color: #faedcd; display: flex; flex-direction: column; height: 100vh; margin: 0; }
-        .chat-header { background: #d4a373; color: white; padding: 20px; text-align: center; font-weight: bold; }
-        #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .message { padding: 10px 15px; border-radius: 15px; max-width: 70%; }
-        .user { background: #d4a373; color: white; align-self: flex-end; }
-        .ai { background: white; color: #333; align-self: flex-start; border: 1px solid #d4a373; }
-        .input-area { background: white; padding: 20px; display: flex; gap: 10px; }
-        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        button { background: #d4a373; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #faedcd; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-container { width: 90%; max-width: 400px; height: 85vh; background: white; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 25px; overflow: hidden; border: 2px solid #d4a373; }
+        .chat-header { background: #d4a373; color: white; padding: 20px; text-align: left; display: flex; align-items: center; gap: 10px; }
+        .status-dot { width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; border: 2px solid white; }
+        #chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #fdfaf3; }
+        .message { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 14px; line-height: 1.4; position: relative; }
+        .user { background: #d4a373; color: white; align-self: flex-end; border-bottom-right-radius: 5px; }
+        .ai { background: #e9ecef; color: #333; align-self: flex-start; border-bottom-left-radius: 5px; }
+        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        input { flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #d4a373; }
+        button { background: #d4a373; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.3s; }
+        button:hover { transform: scale(1.1); background: #bc8a5f; }
     </style>
 </head>
 <body>
-    <div class="chat-header">Retag AI Assistant 🤖</div>
-    <div id="chat-window">
-        <div class="message ai">Hello! I am Retag's AI. How can I help you today?</div>
-    </div>
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="status-dot"></div>
+            <div>
+                <div style="font-size: 16px;">Retag AI Assistant</div>
+                <div style="font-size: 10px; opacity: 0.8;">Online | Active Now</div>
+            </div>
+        </div>
+        <div id="chat-window">
+            <div class="message ai">Welcome! I'm your smart assistant. How can I help you today?</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Ask me anything...">
+            <button onclick="sendMessage()">➤</button>
+        </div>
     </div>
 
     <script>
         function sendMessage() {
             const input = document.getElementById('user-input');
-            const window = document.getElementById('chat-window');
+            const chatWindow = document.getElementById('chat-window');
             if (input.value.trim() === "") return;
 
             // رسالة المستخدم
             const userMsg = document.createElement('div');
             userMsg.className = 'message user';
             userMsg.innerText = input.value;
-            window.appendChild(userMsg);
+            chatWindow.appendChild(userMsg);
 
-            // رد مؤقت من الـ AI (هنربطه بذكاء حقيقي لاحقاً)
+            // جاري التفكير...
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'message ai';
+            typingMsg.innerText = "...";
+            typingMsg.id = "typing";
+            chatWindow.appendChild(typingMsg);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
             setTimeout(() => {
+                document.getElementById('typing').remove();
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'message ai';
-                aiMsg.innerText = "I'm thinking... (Connecting to Retag's Brain)";
-                window.appendChild(aiMsg);
-                window.scrollTop = window.scrollHeight;
-            }, 1000);
+                aiMsg.innerText = "I am processing your request. Soon I will be connected to Retag's server!";
+                chatWindow.appendChild(aiMsg);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 1500);
 
             input.value = "";
         }
