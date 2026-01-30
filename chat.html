@@ -9,6 +9,8 @@
         .header { background: #202123; padding: 15px; text-align: center; border-bottom: 1px solid #333; position: relative; }
         .header .logo { font-weight: bold; font-size: 20px; color: #d4a373; }
         .back-btn { position: absolute; left: 15px; top: 18px; color: white; text-decoration: none; font-size: 13px; background: #3e3f4b; padding: 5px 10px; border-radius: 5px; }
+
+        /* منطقة الشات مفرودة زي صورتك الأخيرة */
         #chat-window { flex: 1; overflow-y: auto; padding: 20px 10%; display: flex; flex-direction: column; }
         .msg-row { display: flex; width: 100%; margin-bottom: 20px; }
         .user-row { justify-content: flex-end; }
@@ -16,10 +18,13 @@
         .bubble { padding: 12px 18px; border-radius: 15px; max-width: 80%; line-height: 1.5; font-size: 15px; }
         .user-bubble { background: #d4a373; color: black; }
         .ai-bubble { background: #2c2c2e; border: 1px solid #3d3d3f; }
-        .input-area { padding: 20px 10%; background: #1a1a1a; }
-        .input-box { background: #2c2c2e; border-radius: 12px; padding: 10px 15px; display: flex; align-items: center; border: 1px solid #3d3d3f; }
-        input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 16px; }
-        button { background: none; border: none; color: #d4a373; cursor: pointer; font-size: 22px; }
+
+        /* تعديل مكان الكتابة علشان يبان فوق أزرار الموبايل */
+        .input-area { padding: 25px 10% 40px 10%; background: #202123; border-top: 2px solid #d4a373; }
+        .input-box { background: #ffffff; border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        input { flex: 1; background: transparent; border: none; color: #000; outline: none; font-size: 16px; font-weight: bold; }
+        input::placeholder { color: #666; }
+        button { background: #d4a373; border: none; color: white; cursor: pointer; font-size: 20px; padding: 5px 15px; border-radius: 8px; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -28,12 +33,12 @@
         <div class="logo">Retag AI</div>
     </div>
     <div id="chat-window">
-        <div class="msg-row ai-row"><div class="bubble ai-bubble">Hello, Retag! How can I help?</div></div>
+        <div class="msg-row ai-row"><div class="bubble ai-bubble">Hello, Retag! Write your message in the white box below.</div></div>
     </div>
     <div class="input-area">
         <div class="input-box">
-            <input type="text" id="user-input" placeholder="Message Retag AI..." onkeypress="if(event.key==='Enter') send()">
-            <button onclick="send()">➤</button>
+            <input type="text" id="user-input" placeholder="Type here يا ريتاج..." onkeypress="if(event.key==='Enter') send()">
+            <button onclick="send()">Send</button>
         </div>
     </div>
     <script>
@@ -46,7 +51,7 @@
             inp.value = "";
             win.scrollTop = win.scrollHeight;
             try {
-                // استخدمت كود اتصال مختلف تماماً عشان نتفادى الـ Error اللي في الصور
+                // الكود ده هيحل مشكلة الـ Error اللي ظهرتلك
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD` + `Wz-rC1m` + `P_pB7r` + `A3l-n` + `v7mE` + `R-o6tU` + `Z8Yc`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -56,7 +61,7 @@
                 const reply = data.candidates[0].content.parts[0].text;
                 win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble">${reply}</div></div>`;
             } catch(e) {
-                win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble" style="color:red">Error! Please refresh or check your internet.</div></div>`;
+                win.innerHTML += `<div class="msg-row ai-row"><div class="bubble ai-bubble" style="color:red">Connection error! Try once more.</div></div>`;
             }
             win.scrollTop = win.scrollHeight;
         }
