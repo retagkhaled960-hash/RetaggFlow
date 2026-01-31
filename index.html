@@ -3,133 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retag AI | Pro Platform</title>
+    <title>Retag AI | Premium Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #9966cc; --accent: #ff4444; --bg: #050505; --text: #fff; --glass: rgba(255,255,255,0.05); }
-        [data-theme="light"] { --bg: #f8f9fa; --text: #222; --glass: rgba(0,0,0,0.05); }
+        :root {
+            --primary: #9966cc; --accent: #ff4444; --bg: #050505; --text: #ffffff; --card: rgba(255, 255, 255, 0.05);
+        }
+        [data-theme="light"] {
+            --bg: #f5f5dc; /* بيج فاتح */
+            --text: #4a4a4a; --card: #ffffff; --primary: #d4a373;
+        }
 
         body { 
             margin: 0; background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: 0.3s;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L55 25 L40 35 L45 55 L30 45 L15 55 L20 35 L5 25 L25 25 Z' fill='%239966cc' fill-opacity='0.03'/%3E%3C/svg%3E");
+            overflow-x: hidden; position: relative;
         }
 
-        /* سرعة الإعدادات */
-        .sidebar { 
-            position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg); 
-            z-index: 5000; transition: transform 0.2s ease-out; /* تسريع الحركة */
-            padding: 25px; border-inline-start: 2px solid var(--primary); 
+        /* خلفية الرعد */
+        .thunder-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(to bottom, transparent, rgba(153, 102, 204, 0.05));
+            overflow: hidden;
         }
-        #html-tag[dir="rtl"] .sidebar { left: -320px; transform: translateX(0); }
-        #html-tag[dir="rtl"] .sidebar.active { transform: translateX(320px); }
-        #html-tag[dir="ltr"] .sidebar { right: -320px; transform: translateX(0); }
-        #html-tag[dir="ltr"] .sidebar.active { transform: translateX(-320px); }
+        .bolt {
+            position: absolute; background: var(--primary); width: 2px; height: 100px;
+            opacity: 0; filter: blur(1px); animation: thunder-strike 5s infinite;
+        }
+        @keyframes thunder-strike {
+            0%, 90% { opacity: 0; transform: translateY(-100px); }
+            92% { opacity: 1; transform: translateY(100vh) skewX(-20deg); }
+            94% { opacity: 0; }
+        }
 
-        .option-card { background: var(--glass); padding: 30px; border-radius: 20px; text-align: center; transition: 0.3s; border: 1px solid transparent; }
-        .option-card:hover { border-color: var(--primary); transform: scale(1.02); }
-        .hidden { display: none !important; }
-        .btn-red { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; }
+        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
+        .logo { font-family: 'Orbitron'; font-size: 1.8rem; font-weight: bold; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        /* Sidebar مخفي تماماً */
+        .sidebar {
+            position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg);
+            z-index: 9999; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px; border-inline-start: 3px solid var(--primary);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        #html-tag[dir="rtl"] .sidebar { left: -350px; }
+        #html-tag[dir="rtl"] .sidebar.active { left: 0; }
+        #html-tag[dir="ltr"] .sidebar { right: -350px; }
+        #html-tag[dir="ltr"] .sidebar.active { right: 0; }
+
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
+        .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
+        
+        /* واجهة الشرح والصور */
+        .hero-info { padding: 60px 5%; text-align: center; }
+        .hero-info img { width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 20px 0; }
+
+        .auth-box { max-width: 400px; margin: auto; background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <nav style="padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px);">
-        <div style="font-family: 'Orbitron'; font-size: 1.5rem;">RETAG <i class="fas fa-bolt" style="color:var(--primary)"></i> AI</div>
-        <div style="display: flex; gap: 20px; align-items: center;">
-            <span id="user-hi" style="font-weight: bold;"></span>
-            <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer; font-size: 22px;"></i>
+    <div class="thunder-bg">
+        <div class="bolt" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="bolt" style="left: 50%; animation-delay: 3s;"></div>
+        <div class="bolt" style="left: 80%; animation-delay: 2s;"></div>
+    </div>
+
+    <nav>
+        <div class="logo">RETAG <i class="fas fa-bolt"></i> AI</div>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <span id="user-welcome" style="font-weight:bold;"></span>
+            <i class="fas fa-cog" onclick="toggleMenu()" style="cursor:pointer; font-size:24px;"></i>
         </div>
     </nav>
 
     <div id="sidebar" class="sidebar">
-        <span onclick="toggleMenu()" style="color:var(--accent); font-size: 30px; cursor:pointer;">×</span>
-        <h2 id="txt-settings" style="margin-top:40px;">الإعدادات</h2>
-        <div onclick="showProfile()" style="padding:15px; cursor:pointer;"><i class="fas fa-user-circle"></i> <span id="txt-profile">الملف الشخصي</span></div>
-        <div onclick="toggleTheme()" style="padding:15px; cursor:pointer;"><i class="fas fa-moon"></i> <span id="txt-theme">الوضع الليلي</span></div>
+        <i class="fas fa-times" onclick="toggleMenu()" style="color:var(--accent); font-size:30px; cursor:pointer;"></i>
+        <h2 id="txt-sets" style="margin-top:30px;">إعدادات المنصة</h2>
+        <div onclick="toggleTheme()" style="padding:15px; cursor:pointer;"><i class="fas fa-sun"></i> <span id="txt-theme">تبديل الوضع (Dark/Light)</span></div>
         <div style="margin-top:20px;">
-            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:10px; background:#222; color:white; border-radius:8px; border:1px solid var(--primary);">
-                <option value="ar">🇪🇬 العربية</option>
-                <option value="en">🇺🇸 English</option>
-                <option value="fr">🇫🇷 Français</option>
+            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:10px; border-radius:8px; background:#333; color:white;">
+                <option value="ar">العربية 🇪🇬</option>
+                <option value="en">English 🇺🇸</option>
+                <option value="fr">Français 🇫🇷</option>
             </select>
         </div>
-        <button class="btn-red" onclick="logout()" style="margin-top:40px;">Logout</button>
+        <button class="btn-action" style="background:var(--accent); margin-top:50px;" onclick="logout()">تسجيل الخروج</button>
     </div>
 
-    <section id="main-options" style="padding:40px 5%;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px;">
-            <div class="option-card">
-                <i class="fas fa-brain" style="font-size:40px; color:var(--primary);"></i>
-                <h3 id="txt-ai-title">الذكاء الاصطناعي</h3>
-                <p id="txt-ai-desc">شات ذكي متطور جداً</p>
-            </div>
-            <div class="option-card">
-                <i class="fas fa-code" style="font-size:40px; color:var(--primary);"></i>
-                <h3 id="txt-code-title">إصلاح الكود</h3>
-                <p id="txt-code-desc">اكتشف الأخطاء برمجياً فوراً</p>
-            </div>
-            <div class="option-card">
-                <i class="fas fa-upload" style="font-size:40px; color:var(--primary);"></i>
-                <h3 id="txt-up-title">رفع الملفات</h3>
-                <p id="txt-up-desc">تحليل الصور والفيديو بالذكاء</p>
-            </div>
+    <section id="intro-section" class="hero-info">
+        <h1 id="txt-main-title">ذكاء اصطناعي يغير قواعد اللعبة</h1>
+        <p id="txt-main-desc">منصة Retag AI تساعدك على إصلاح الأكواد المعقدة، توليد صور خيالية، والدردشة مع أحدث نماذج الذكاء الاصطناعي في العالم.</p>
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000" alt="AI Technology">
+    </section>
+
+    <section id="login-section" style="padding: 20px 5%;">
+        <div class="auth-box">
+            <h3 id="txt-login-head">سجل دخولك الآن</h3>
+            <button class="btn-action" style="background:#fff; color:#444; margin-bottom:10px;" onclick="socialAction('Google')">
+                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> المتابعة عبر جوجل
+            </button>
+            <button class="btn-action" style="background:#1877f2; color:#fff; margin-bottom:20px;" onclick="socialAction('Facebook')">
+                <i class="fab fa-facebook-f"></i> المتابعة عبر فيسبوك
+            </button>
+            <hr style="opacity:0.2;">
+            <input type="email" id="email" placeholder="البريد الإلكتروني" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #444; background:transparent; color:inherit;">
+            <input type="password" id="pass" placeholder="كلمة المرور" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #444; background:transparent; color:inherit;">
+            <button class="btn-action" onclick="loginSuccess()">دخول آمن</button>
+            <p onclick="forgotPass()" style="font-size:12px; color:var(--primary); cursor:pointer; margin-top:15px; text-align:center;" id="txt-forgot">نسيت كلمة المرور؟</p>
         </div>
     </section>
 
-    <section id="profile-area" class="hidden" style="padding:50px 5%; text-align:center;">
-        <div style="background:var(--glass); padding:30px; border-radius:20px; max-width:400px; margin:auto;">
-            <div style="position:relative; display:inline-block;">
-                <img id="user-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" style="width:120px; height:120px; border-radius:50%; border:3px solid var(--primary); object-fit:cover;">
-                <label for="img-upload" style="position:absolute; bottom:0; right:0; background:var(--primary); padding:8px; border-radius:50%; cursor:pointer;"><i class="fas fa-camera"></i></label>
-                <input type="file" id="img-upload" style="display:none;" onchange="uploadPhoto(this)">
+    <section id="dashboard" class="hidden" style="padding:40px 5%;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px;">
+            <div class="auth-box" style="text-align:center;">
+                <i class="fas fa-robot" style="font-size:40px; color:var(--primary);"></i>
+                <h3 id="txt-card1-t">Retag Chat</h3>
+                <p id="txt-card1-d">دردشة ذكية وفورية.</p>
             </div>
-            <h2 id="user-name-disp">User</h2>
-            <button class="btn-red" style="background:#555; margin-top:20px;" onclick="hideProfile()">Back</button>
+            <div class="auth-box" style="text-align:center;">
+                <i class="fas fa-bug" style="font-size:40px; color:var(--primary);"></i>
+                <h3 id="txt-card2-t">إصلاح الأكواد</h3>
+                <p id="txt-card2-d">حل المشاكل البرمجية بلحظة.</p>
+            </div>
         </div>
     </section>
 
     <script>
-        const dict = {
-            ar: { settings:"الإعدادات", profile:"الملف الشخصي", theme:"الوضع الليلي", aiT:"الذكاء الاصطناعي", aiD:"شات ذكي متطور جداً", codeT:"إصلاح الكود", codeD:"اكتشف الأخطاء برمجياً فوراً", upT:"رفع الملفات", upD:"تحليل الصور والفيديو بالذكاء", hi:"هاي" },
-            en: { settings:"Settings", profile:"Profile", theme:"Dark Mode", aiT:"Retag AI Chat", aiD:"Advanced AI Assistant", codeT:"Code Fixer", codeD:"Find and fix bugs instantly", upT:"Media Upload", upD:"AI Image & Video Analysis", hi:"Hi" },
-            fr: { settings:"Paramètres", profile:"Profil", theme:"Mode Sombre", aiT:"Retag AI Chat", aiD:"Assistant IA avancé", codeT:"Réparateur de code", codeD:"Trouvez les erreurs instantanément", upT:"Télécharger", upD:"Analyse Image & Vidéo IA", hi:"Salut" }
+        const translations = {
+            ar: { title: "ذكاء اصطناعي يغير قواعد اللعبة", desc: "منصة Retag AI تساعدك...", sets: "الإعدادات", forgot: "نسيت كلمة المرور؟", hi: "مرحباً" },
+            en: { title: "AI That Changes Everything", desc: "Retag AI platform helps you...", sets: "Settings", forgot: "Forgot Password?", hi: "Hello" },
+            fr: { title: "L'IA qui change tout", desc: "La plateforme Retag AI vous aide...", sets: "Paramètres", forgot: "Mot de passe oublié?", hi: "Salut" }
         };
 
-        function updateLang() {
-            const l = localStorage.getItem('lang') || 'ar';
-            const d = dict[l];
-            document.getElementById('txt-settings').innerText = d.settings;
-            document.getElementById('txt-profile').innerText = d.profile;
-            document.getElementById('txt-theme').innerText = d.theme;
-            document.getElementById('txt-ai-title').innerText = d.aiT;
-            document.getElementById('txt-ai-desc').innerText = d.aiD;
-            document.getElementById('txt-code-title').innerText = d.codeT;
-            document.getElementById('txt-code-desc').innerText = d.codeD;
-            document.getElementById('txt-up-title').innerText = d.upT;
-            document.getElementById('txt-up-desc').innerText = d.upD;
-            document.getElementById('user-hi').innerText = `${d.hi} ${localStorage.getItem('userName') || 'User'} 👋`;
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        
+        function toggleTheme() {
+            const theme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
         }
 
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
-        function uploadPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => { document.getElementById('user-img').src = e.target.result; localStorage.setItem('userPhoto', e.target.result); };
-                reader.readAsDataURL(input.files[0]);
-            }
+        function socialAction(platform) {
+            alert(`جاري الاتصال بـ ${platform}... سيتم فتح صفحة المتابعة باسمك.`);
+            loginSuccess();
         }
-        function showProfile() { document.getElementById('profile-area').classList.remove('hidden'); document.getElementById('main-options').classList.add('hidden'); toggleMenu(); }
-        function hideProfile() { document.getElementById('profile-area').classList.add('hidden'); document.getElementById('main-options').classList.remove('hidden'); }
-        
+
+        function forgotPass() {
+            const email = prompt("أدخل بريدك الإلكتروني لإرسال كود التحقق عبر WhatsApp أو SMS:");
+            if(email) alert("تم إرسال الرابط! تفقد هاتفك الآن.");
+        }
+
+        function loginSuccess() {
+            const name = document.getElementById('email').value.split('@')[0] || 'Retag';
+            localStorage.setItem('userName', name);
+            localStorage.setItem('loggedIn', 'true');
+            location.reload();
+        }
+
+        function logout() { localStorage.clear(); location.reload(); }
+
+        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
+
         window.onload = () => {
-            const l = localStorage.getItem('lang') || 'ar';
-            document.getElementById('lang-select').value = l;
-            document.getElementById('html-tag').dir = l === 'ar' ? 'rtl' : 'ltr';
-            updateLang();
-            document.getElementById('user-name-disp').innerText = localStorage.getItem('userName') || 'User';
-            document.getElementById('user-img').src = localStorage.getItem('userPhoto') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=1';
+            const lang = localStorage.getItem('lang') || 'ar';
+            document.getElementById('html-tag').dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-select').value = lang;
+            if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
+            
+            if(localStorage.getItem('loggedIn')) {
+                document.getElementById('intro-section').classList.add('hidden');
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('user-welcome').innerText = `${translations[lang].hi} ${localStorage.getItem('userName')} 👋`;
+            }
         };
     </script>
 </body>
