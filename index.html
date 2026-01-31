@@ -8,215 +8,185 @@
     <style>
         :root { 
             --bg: #ffffff; --text: #222; --primary: #d4a373; --secondary: #faedcd; 
-            --card: #fefae0; --footer: #333; --accent: #d4a373;
+            --card: #fefae0; --footer: #333; --accent: #d4a373; --welcome-text: #000;
         }
-        /* الدارك مود: أسود في موڤ */
+        /* دارك مود "أسود فاحم" مع موڤ */
         [data-theme="dark"] { 
             --bg: #000000; --text: #ffffff; --primary: #bb86fc; 
-            --secondary: #121212; --card: #1e1e1e; --footer: #000; --accent: #9966cc;
+            --secondary: #050505; --card: #111111; --footer: #000; --accent: #bb86fc; --welcome-text: #fff;
         }
         
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; scroll-behavior: smooth; overflow-x: hidden; }
         
-        /* الهيدر المطور */
-        nav { background: var(--primary); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        nav { background: var(--primary); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .nav-links { display: flex; gap: 20px; }
-        .nav-links div { position: relative; cursor: pointer; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; transition: 0.3s; }
-        .nav-links div:hover { background: rgba(255,255,255,0.2); }
-        
-        /* القائمة المنسدلة */
-        .dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--bg); color: var(--text); min-width: 150px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 5px; overflow: hidden; }
-        .nav-links div:hover .dropdown { display: block; }
-        .dropdown a { display: block; padding: 10px; text-decoration: none; color: var(--text); font-size: 14px; border-bottom: 1px solid #eee; }
-        .dropdown a:hover { background: var(--secondary); }
-
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .theme-toggle, .lang-select, .logout-btn { cursor: pointer; padding: 6px 12px; border-radius: 20px; border: none; background: white; color: var(--primary); font-weight: bold; font-size: 12px; transition: 0.3s; }
-        .logout-btn { background: #ff4d4d; color: white; display: none; }
 
-        /* سكشن الصور والتسجيل */
-        .hero-section { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; padding: 40px; gap: 40px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
-        .hero-content { max-width: 500px; text-align: left; }
-        .hero-images { display: flex; gap: 15px; }
-        .hero-images img { width: 150px; height: 100px; border-radius: 10px; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* سكشن الترحيب والاحتفال */
+        #welcome-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; 
+        }
+        .spinning-hi { 
+            font-size: 60px; font-weight: bold; color: var(--welcome-text);
+            animation: spin 2s ease-in-out infinite; display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .login-container { background: var(--bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 350px; color: var(--text); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; background: var(--bg); color: var(--text); }
-        
-        /* الأيقونات بجانب الخيارات */
-        .option-card { background: var(--card); padding: 25px; border-radius: 15px; border: 2px solid var(--primary); transition: 0.3s; text-align: center; position: relative; }
-        .option-card i { font-size: 40px; color: var(--primary); margin-bottom: 15px; display: block; }
-        .option-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        /* سكشن شرح الموقع (Hero) */
+        .site-intro { padding: 60px 20px; text-align: center; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200'); background-size: cover; color: white; display: none; }
+        .site-intro h2 { font-size: 36px; margin-bottom: 10px; color: var(--primary); }
+        .site-intro p { font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
 
+        /* واجهة الفيس بوك الوهمية الاحترافية */
+        #fb-mock { 
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 400px; background: white; border-radius: 8px; box-shadow: 0 0 50px rgba(0,0,0,0.5); z-index: 3000; padding: 20px; color: #1c1e21; font-family: Helvetica, Arial, sans-serif;
+        }
+        .fb-header { color: #1877f2; font-size: 30px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        .fb-input { width: 90%; padding: 12px; margin: 5px 0; border: 1px solid #dddfe2; border-radius: 6px; }
+        .fb-login-btn { background: #1877f2; color: white; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+
+        .login-container { background: var(--bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 350px; margin: 20px auto; border: 2px solid var(--primary); }
+        .option-card { background: var(--card); padding: 25px; border-radius: 15px; border: 2px solid var(--primary); transition: 0.3s; text-align: center; }
+        .theme-toggle, .lang-select { cursor: pointer; padding: 6px 12px; border-radius: 20px; border: none; background: white; color: var(--primary); font-weight: bold; }
         .btn-email { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-fb { background: #1877f2; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; }
-
-        footer { background: var(--footer); color: white; padding: 30px; text-align: center; }
         
-        /* أنيميشن الترحيب */
-        #welcome-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        #welcome-overlay h1 { font-size: 50px; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        footer { background: var(--footer); color: white; padding: 30px; text-align: center; }
+        .hidden { display: none; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body id="main-body">
+
+    <div id="fb-mock">
+        <div class="fb-header">facebook</div>
+        <p style="text-align: center; font-size: 14px;">Log in to use your Facebook account with <b>RetaggFlow</b></p>
+        <input type="text" class="fb-input" placeholder="Email or phone number">
+        <input type="password" class="fb-input" placeholder="Password">
+        <button class="fb-login-btn" onclick="finalizeLogin('Facebook User')">Log In</button>
+        <div style="text-align: center; color: #1877f2; font-size: 14px; margin-top: 15px; cursor: pointer;">Forgotten password?</div>
+    </div>
 
     <div id="welcome-overlay">
-        <h1 id="welcome-text">🎉 Welcome Back! 🎉</h1>
-        <p>Loading your experience...</p>
+        <div class="spinning-hi">Hi User!</div>
+        <p id="wait-msg" style="margin-top: 20px; font-weight: bold; color: var(--welcome-text);">Preparing your dashboard...</p>
     </div>
 
     <nav>
-        <div class="nav-links">
-            <div id="nav-home">🏠 Home
-                <div class="dropdown">
-                    <a href="#home">Main Options</a>
-                    <a href="#features">AI Features</a>
-                </div>
-            </div>
-            <div id="nav-support">🛠 Support
-                <div class="dropdown">
-                    <a href="#login">My Account</a>
-                    <a href="mailto:support@retagg.com">Contact Us</a>
-                </div>
-            </div>
-        </div>
+        <div class="nav-links"><div id="nav-home">🏠 Home</div><div id="nav-support">🛠 Support</div></div>
         <div class="nav-right">
-            <select class="lang-select" onchange="changeLang(this.value)">
+            <select class="lang-select" id="lang-picker" onchange="changeLang(this.value)">
                 <option value="en">English</option>
                 <option value="ar">العربية</option>
+                <option value="fr">Français</option>
             </select>
             <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
-            <button class="logout-btn" id="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
     </nav>
 
-    <section id="login" class="hero-section">
-        <div class="hero-content">
-            <h1 id="hero-title">Start Your AI Journey</h1>
-            <p>Connect with the future of technology and coding.</p>
-            <div class="hero-images">
-                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=300" alt="Laptop">
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=300" alt="AI">
-            </div>
-        </div>
+    <section id="site-intro" class="site-intro">
+        <h2 id="intro-title">Welcome to RetaggFlow Pro</h2>
+        <p id="intro-desc">Your all-in-one AI power station. Debug code in seconds, chat with our advanced AI, and download assets instantly. Technology, simplified.</p>
+    </section>
+
+    <section id="login-section">
         <div class="login-container">
             <h2 id="login-title">Login</h2>
-            <input type="email" id="email" placeholder="Email Address">
+            <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn-email" onclick="handleLogin('email')" id="login-btn">Login</button>
-            <button class="btn-fb" onclick="handleLogin('facebook')" id="fb-btn">
-                <i class="fab fa-facebook"></i> Login with Facebook
+            <button class="btn-email" onclick="finalizeLogin('User')" id="login-btn">Login</button>
+            <button class="btn-email" style="background: #1877f2; margin-top: 10px;" onclick="showFB()" id="fb-btn">
+                <i class="fab fa-facebook"></i> Facebook Login
             </button>
-            <a href="javascript:void(0)" onclick="alert('Reset link sent!')" class="forgot-pass" id="forgot-text">Forgot Password?</a>
         </div>
-    </nav>
+    </section>
 
     <section id="home">
-        <h1 id="home-title">Home Options</h1>
+        <h1 id="home-title">Our Services</h1>
         <div class="home-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;">
             <div class="option-card">
-                <i class="fas fa-robot"></i>
-                <h3 id="ai-title">Retag AI Assistant</h3>
-                <p id="ai-desc">Chat with my custom AI assistant here.</p>
+                <i class="fas fa-robot" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 id="ai-title">Retag AI</h3>
                 <button class="btn-email" onclick="protectedAction('chat.html')" id="ai-btn">Chat Now</button>
             </div>
             <div class="option-card">
-                <i class="fas fa-bug"></i>
-                <h3 id="debug-title">Code Debugger</h3>
-                <p id="debug-desc">Fix your code instantly.</p>
-                <button class="btn-email" onclick="protectedAction('#')" id="debug-btn">Check Code</button>
+                <i class="fas fa-bug" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 id="debug-title">Debugger</h3>
+                <button class="btn-email" onclick="protectedAction('#')" id="debug-btn">Fix Code</button>
             </div>
             <div class="option-card">
-                <i class="fas fa-download"></i>
-                <h3 id="down-title">AI Downloader</h3>
-                <p id="down-desc">Download AI content easily.</p>
+                <i class="fas fa-download" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 id="down-title">Downloader</h3>
                 <button class="btn-email" onclick="protectedAction('#')" id="down-btn">Download</button>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 All Rights Reserved | <strong>By Retag Khaled</strong></p>
+        <p>© 2026 | <strong>By Retag Khaled</strong></p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
-            checkUserStatus();
-        });
+        const translations = {
+            en: { home: "🏠 Home", login: "Login", ai: "Retag AI", debug: "Debugger", down: "Downloader", introT: "Welcome to RetaggFlow Pro", introD: "Your all-in-one AI power station. Debug code in seconds and chat with AI." },
+            ar: { home: "🏠 الرئيسية", login: "تسجيل دخول", ai: "مساعد ريتاج", debug: "مصلح الأكواد", down: "التحميلات", introT: "مرحباً بك في RetaggFlow Pro", introD: "محطتك المتكاملة للذكاء الاصطناعي. أصلح أكوادك وتحدث مع مساعدنا الذكي في ثوانٍ." },
+            fr: { home: "🏠 Accueil", login: "Connexion", ai: "Retag AI", debug: "Débogage", down: "Téléchargeur", introT: "Bienvenue sur RetaggFlow Pro", introD: "Votre station IA tout-en-un. Déboguez du code et discutez avec l'IA en quelques secondes." }
+        };
+
+        function changeLang(lang) {
+            localStorage.setItem('lang', lang);
+            const t = translations[lang];
+            document.getElementById('nav-home').innerText = t.home;
+            document.getElementById('login-title').innerText = t.login;
+            document.getElementById('ai-title').innerText = t.ai;
+            document.getElementById('debug-title').innerText = t.debug;
+            document.getElementById('down-title').innerText = t.down;
+            document.getElementById('intro-title').innerText = t.introT;
+            document.getElementById('intro-desc').innerText = t.introD;
+            document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        }
 
         function toggleTheme() {
             const body = document.body;
-            const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            if (newTheme === 'dark') body.setAttribute('data-theme', 'dark');
-            else body.removeAttribute('data-theme');
-            localStorage.setItem('theme', newTheme);
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            isDark ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
         }
 
-        function handleLogin(type) {
-            if (type === 'facebook') {
-                // محاكاة الاحترافية: فتح نافذة منبثقة للفيس
-                const win = window.open("https://www.facebook.com/login", "_blank", "width=500,height=600");
-                setTimeout(() => {
-                    win.close();
-                    finalizeLogin("Facebook User");
-                }, 2000);
-            } else {
-                const email = document.getElementById('email').value;
-                if (!email.includes('@')) return alert("Enter valid email");
-                finalizeLogin(email.split('@')[0]);
-            }
-        }
+        function showFB() { document.getElementById('fb-mock').style.display = 'block'; }
 
         function finalizeLogin(name) {
+            document.getElementById('fb-mock').style.display = 'none';
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userName', name);
             
-            // احتفالات والترحيب
             const overlay = document.getElementById('welcome-overlay');
-            document.getElementById('welcome-text').innerText = `🎉 Hi, ${name}! 🎉`;
             overlay.style.display = 'flex';
             
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
 
-            setTimeout(() => {
-                location.reload();
-            }, 3000);
-        }
-
-        function handleLogout() {
-            localStorage.clear();
-            location.reload();
-        }
-
-        function checkUserStatus() {
-            const logged = localStorage.getItem('isLoggedIn');
-            if (logged) {
-                document.getElementById('login').style.display = "none";
-                document.getElementById('logout-btn').style.display = "block";
-            }
+            setTimeout(() => { location.reload(); }, 3000);
         }
 
         function protectedAction(url) {
             if (!localStorage.getItem('isLoggedIn')) {
-                alert('Please login first');
-                document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
-            } else if (url !== '#') {
-                window.location.href = url;
-            }
+                alert("Login required!");
+                document.getElementById('login-section').scrollIntoView({ behavior: 'smooth' });
+            } else { if(url !== '#') window.location.href = url; }
         }
 
-        function changeLang(lang) {
-            const isAr = lang === 'ar';
-            document.getElementById('html-tag').setAttribute('dir', isAr ? 'rtl' : 'ltr');
-            // هنا يمكنك إضافة مصفوفة الترجمة السابقة لتغيير النصوص
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+            changeLang(localStorage.getItem('lang') || 'en');
+            
+            if (localStorage.getItem('isLoggedIn')) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('site-intro').style.display = 'block';
+                document.getElementById('lang-picker').value = localStorage.getItem('lang') || 'en';
+            }
+        });
     </script>
 </body>
 </html>
