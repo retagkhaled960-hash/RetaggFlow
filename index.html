@@ -3,181 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retag AI | Premium Experience</title>
+    <title>Retag AI | Ultimate Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #9966cc; --accent: #ff4444; --bg: #050505; --text: #ffffff; --card: rgba(255, 255, 255, 0.05);
-        }
-        [data-theme="light"] {
-            --bg: #f5f5dc; /* بيج فاتح */
-            --text: #4a4a4a; --card: #ffffff; --primary: #d4a373;
-        }
-
-        body { 
-            margin: 0; background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: 0.3s;
-            overflow-x: hidden; position: relative;
-        }
-
-        /* خلفية الرعد */
-        .thunder-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: linear-gradient(to bottom, transparent, rgba(153, 102, 204, 0.05));
-            overflow: hidden;
-        }
-        .bolt {
-            position: absolute; background: var(--primary); width: 2px; height: 100px;
-            opacity: 0; filter: blur(1px); animation: thunder-strike 5s infinite;
-        }
-        @keyframes thunder-strike {
-            0%, 90% { opacity: 0; transform: translateY(-100px); }
-            92% { opacity: 1; transform: translateY(100vh) skewX(-20deg); }
-            94% { opacity: 0; }
-        }
-
-        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
-        .logo { font-family: 'Orbitron'; font-size: 1.8rem; font-weight: bold; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        :root { --p: #9966cc; --a: #ff4444; --bg: #050505; --t: #fff; --c: rgba(255,255,255,0.05); }
+        [data-theme="light"] { --bg: #fdf5e6; --t: #333; --c: #fff; --p: #d4a373; }
+        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Cairo', sans-serif; transition: 0.3s; overflow-x: hidden; }
+        
+        /* الرعد */
+        .bolt { position: absolute; background: var(--p); width: 1px; height: 100px; opacity: 0; animation: strike 4s infinite; }
+        @keyframes strike { 0%, 85% { opacity: 0; } 86% { opacity: 1; transform: skewX(-20deg); } 88% { opacity: 0; } }
+        
+        /* الهيدر */
+        nav { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); position: sticky; top:0; z-index:1000; }
+        .logo { font-family:'Orbitron'; color:var(--p); font-size: 1.5rem; }
+        
+        /* صندوق الإشعارات */
+        .notif-panel { position: absolute; top: 60px; left: 20px; width: 280px; background: var(--bg); border: 1px solid var(--p); border-radius: 15px; padding: 15px; display: none; z-index: 2000; box-shadow: 0 10px 30px #000; }
+        .notif-item { font-size: 13px; padding: 10px; border-bottom: 1px solid var(--c); display: flex; justify-content: space-between; align-items: center; }
+        .notif-badge { background: var(--a); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 50%; position: absolute; top: -5px; right: -5px; }
 
         /* Sidebar مخفي تماماً */
-        .sidebar {
-            position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg);
-            z-index: 9999; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 30px; border-inline-start: 3px solid var(--primary);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-        #html-tag[dir="rtl"] .sidebar { left: -350px; }
-        #html-tag[dir="rtl"] .sidebar.active { left: 0; }
-        #html-tag[dir="ltr"] .sidebar { right: -350px; }
-        #html-tag[dir="ltr"] .sidebar.active { right: 0; }
-
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-        .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .sidebar { position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg); z-index: 5000; transition: 0.3s; padding: 30px; border-inline-start: 3px solid var(--p); visibility: hidden; }
+        #html-tag[dir="rtl"] .sidebar { left: -350px; } #html-tag[dir="rtl"] .sidebar.active { left: 0; visibility: visible; }
+        #html-tag[dir="ltr"] .sidebar { right: -350px; } #html-tag[dir="ltr"] .sidebar.active { right: 0; visibility: visible; }
         
-        /* واجهة الشرح والصور */
-        .hero-info { padding: 60px 5%; text-align: center; }
-        .hero-info img { width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 20px 0; }
-
-        .auth-box { max-width: 400px; margin: auto; background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
-        .hidden { display: none; }
+        .card { background: var(--c); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; cursor: pointer; }
+        .card:hover { border-color: var(--p); transform: translateY(-5px); }
+        .hidden { display: none !important; }
+        .avatar-opt { width: 60px; height: 60px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; }
+        .avatar-opt:hover { border-color: var(--p); }
     </style>
 </head>
 <body>
-
-    <div class="thunder-bg">
-        <div class="bolt" style="left: 20%; animation-delay: 1s;"></div>
-        <div class="bolt" style="left: 50%; animation-delay: 3s;"></div>
-        <div class="bolt" style="left: 80%; animation-delay: 2s;"></div>
-    </div>
+    <div style="position:fixed; width:100%; height:100%; z-index:-1;"><div class="bolt" style="left:15%"></div><div class="bolt" style="left:75%; animation-delay:2s"></div></div>
 
     <nav>
         <div class="logo">RETAG <i class="fas fa-bolt"></i> AI</div>
-        <div style="display:flex; align-items:center; gap:15px;">
-            <span id="user-welcome" style="font-weight:bold;"></span>
-            <i class="fas fa-cog" onclick="toggleMenu()" style="cursor:pointer; font-size:24px;"></i>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <div style="position:relative; cursor:pointer;" onclick="toggleNotif()">
+                <i class="fas fa-bell" style="font-size:22px; color:var(--p)"></i>
+                <span class="notif-badge" id="n-count">0</span>
+                <div id="notif-panel" class="notif-panel">
+                    <h4 id="txt-n-title" style="margin:0 0 10px 0;">الإشعارات</h4>
+                    <div id="notif-list"></div>
+                </div>
+            </div>
+            <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer; font-size:24px;"></i>
         </div>
     </nav>
 
     <div id="sidebar" class="sidebar">
-        <i class="fas fa-times" onclick="toggleMenu()" style="color:var(--accent); font-size:30px; cursor:pointer;"></i>
-        <h2 id="txt-sets" style="margin-top:30px;">إعدادات المنصة</h2>
-        <div onclick="toggleTheme()" style="padding:15px; cursor:pointer;"><i class="fas fa-sun"></i> <span id="txt-theme">تبديل الوضع (Dark/Light)</span></div>
-        <div style="margin-top:20px;">
-            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:10px; border-radius:8px; background:#333; color:white;">
+        <span onclick="toggleMenu()" style="color:var(--a); font-size:30px; cursor:pointer;">×</span>
+        <h2 id="txt-sets">الإعدادات</h2>
+        <div onclick="showPage('profile')" style="padding:12px; cursor:pointer"><i class="fas fa-user-circle"></i> <span id="txt-p">الحساب</span></div>
+        <div onclick="showPage('security')" style="padding:12px; cursor:pointer"><i class="fas fa-shield-alt"></i> <span id="txt-s">الأمان</span></div>
+        <div style="padding:12px;">
+            <label id="txt-n-tone">صوت الإشعارات:</label>
+            <select id="tone-select" style="width:100%; padding:5px; background:#222; color:#fff; border-radius:5px;">
+                <option value="pop">Pop Tone</option>
+                <option value="bell">Digital Bell</option>
+                <option value="off">Mute 🔇</option>
+            </select>
+        </div>
+        <div onclick="toggleTheme()" style="padding:12px; cursor:pointer"><i class="fas fa-adjust"></i> <span id="txt-t">الوضع الليلي</span></div>
+        <div style="margin-top:10px;">
+            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:8px; background:#333; color:#fff; border-radius:5px;">
                 <option value="ar">العربية 🇪🇬</option>
                 <option value="en">English 🇺🇸</option>
                 <option value="fr">Français 🇫🇷</option>
             </select>
         </div>
-        <button class="btn-action" style="background:var(--accent); margin-top:50px;" onclick="logout()">تسجيل الخروج</button>
+        <button onclick="logout()" style="background:var(--a); color:#fff; border:none; padding:12px; width:100%; margin-top:40px; border-radius:8px; cursor:pointer;">Logout</button>
     </div>
 
-    <section id="intro-section" class="hero-info">
-        <h1 id="txt-main-title">ذكاء اصطناعي يغير قواعد اللعبة</h1>
-        <p id="txt-main-desc">منصة Retag AI تساعدك على إصلاح الأكواد المعقدة، توليد صور خيالية، والدردشة مع أحدث نماذج الذكاء الاصطناعي في العالم.</p>
-        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000" alt="AI Technology">
-    </section>
-
-    <section id="login-section" style="padding: 20px 5%;">
-        <div class="auth-box">
-            <h3 id="txt-login-head">سجل دخولك الآن</h3>
-            <button class="btn-action" style="background:#fff; color:#444; margin-bottom:10px;" onclick="socialAction('Google')">
-                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> المتابعة عبر جوجل
-            </button>
-            <button class="btn-action" style="background:#1877f2; color:#fff; margin-bottom:20px;" onclick="socialAction('Facebook')">
-                <i class="fab fa-facebook-f"></i> المتابعة عبر فيسبوك
-            </button>
-            <hr style="opacity:0.2;">
-            <input type="email" id="email" placeholder="البريد الإلكتروني" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #444; background:transparent; color:inherit;">
-            <input type="password" id="pass" placeholder="كلمة المرور" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #444; background:transparent; color:inherit;">
-            <button class="btn-action" onclick="loginSuccess()">دخول آمن</button>
-            <p onclick="forgotPass()" style="font-size:12px; color:var(--primary); cursor:pointer; margin-top:15px; text-align:center;" id="txt-forgot">نسيت كلمة المرور؟</p>
+    <div id="main-dash" style="padding:40px 5%;">
+        <h2 id="user-hi">هاي ريتاج 👋</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; margin-top:20px;">
+            <div class="card" onclick="track('chat')"><i class="fas fa-comment-dots" style="font-size:30px; color:var(--p)"></i><h3 id="c1">Retag Chat AI</h3></div>
+            <div class="card" onclick="track('code')"><i class="fas fa-code" style="font-size:30px; color:var(--p)"></i><h3 id="c2">Code Fixer</h3></div>
+            <div class="card" onclick="track('up')"><i class="fas fa-cloud-upload-alt" style="font-size:30px; color:var(--p)"></i><h3 id="c3">Media Upload</h3></div>
         </div>
-    </section>
+    </div>
 
-    <section id="dashboard" class="hidden" style="padding:40px 5%;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px;">
-            <div class="auth-box" style="text-align:center;">
-                <i class="fas fa-robot" style="font-size:40px; color:var(--primary);"></i>
-                <h3 id="txt-card1-t">Retag Chat</h3>
-                <p id="txt-card1-d">دردشة ذكية وفورية.</p>
+    <div id="profile-page" class="hidden" style="padding:40px 5%; text-align:center;">
+        <div class="card" style="max-width:500px; margin:auto;">
+            <img id="p-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" style="width:100px; border-radius:50%; border:3px solid var(--p)">
+            <input type="text" id="p-name-in" placeholder="غير اسمك" style="width:80%; padding:10px; margin-top:15px; border-radius:8px; border:1px solid var(--p); background:transparent; color:inherit;">
+            <button onclick="saveName()" style="background:var(--p); color:#fff; border:none; padding:8px 20px; border-radius:8px; margin-top:10px; cursor:pointer;">حفظ</button>
+            <p>أفاتارات مضحكة:</p>
+            <div style="display:flex; justify-content:center; gap:15px;">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=funny" class="avatar-opt" onclick="setAv(this.src)">
+                <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=carrot" class="avatar-opt" onclick="setAv(this.src)">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=alien" class="avatar-opt" onclick="setAv(this.src)">
             </div>
-            <div class="auth-box" style="text-align:center;">
-                <i class="fas fa-bug" style="font-size:40px; color:var(--primary);"></i>
-                <h3 id="txt-card2-t">إصلاح الأكواد</h3>
-                <p id="txt-card2-d">حل المشاكل البرمجية بلحظة.</p>
+            <div style="text-align:right; margin-top:30px; font-size:15px; border-top:1px solid var(--c); padding-top:15px;">
+                <p>💬 الشات: <span id="st-chat">0</span></p>
+                <p>🛠 الأكواد: <span id="st-code">0</span></p>
+                <p>📁 الرفع: <span id="st-up">0</span></p>
             </div>
+            <button onclick="showPage('main')" style="margin-top:20px; background:#555; color:#fff; border:none; padding:10px 30px; border-radius:8px; cursor:pointer;">عودة</button>
         </div>
-    </section>
+    </div>
+
+    <div id="security-page" class="hidden" style="padding:40px 5%;">
+        <div class="card" style="max-width:500px; margin:auto; text-align:right;">
+            <h3>🛡 الأمان والخصوصية</h3>
+            <p><i class="fas fa-lock"></i> تشفير البيانات: <span style="color:green">نشط (AES-256)</span></p>
+            <p><i class="fas fa-user-shield"></i> التحقق بخطوتين: <button style="font-size:11px">تفعيل</button></p>
+            <p><i class="fas fa-history"></i> الجلسات النشطة: <span>القاهرة، مصر</span></p>
+            <button onclick="showPage('main')" style="width:100%; margin-top:20px; background:#555; color:#fff; border:none; padding:10px; border-radius:8px;">عودة</button>
+        </div>
+    </div>
 
     <script>
-        const translations = {
-            ar: { title: "ذكاء اصطناعي يغير قواعد اللعبة", desc: "منصة Retag AI تساعدك...", sets: "الإعدادات", forgot: "نسيت كلمة المرور؟", hi: "مرحباً" },
-            en: { title: "AI That Changes Everything", desc: "Retag AI platform helps you...", sets: "Settings", forgot: "Forgot Password?", hi: "Hello" },
-            fr: { title: "L'IA qui change tout", desc: "La plateforme Retag AI vous aide...", sets: "Paramètres", forgot: "Mot de passe oublié?", hi: "Salut" }
+        const dict = {
+            ar: { sets:"الإعدادات", p:"الحساب", s:"الأمان", t:"الوضع الليلي", n:"الإشعارات", hi:"هاي", welcome: "مرحباً بك في Retag AI!" },
+            en: { sets:"Settings", p:"Account", s:"Security", t:"Dark Mode", n:"Notifications", hi:"Hi", welcome: "Welcome to Retag AI!" },
+            fr: { sets:"Paramètres", p:"Compte", s:"Sécurité", t:"Mode Sombre", n:"Notifications", hi:"Salut", welcome: "Bienvenue sur Retag AI!" }
         };
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        function toggleNotif() { const p = document.getElementById('notif-panel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
         
+        function addNotif(msg) {
+            const list = document.getElementById('notif-list');
+            const item = document.createElement('div');
+            item.className = 'notif-item';
+            item.innerHTML = `<span>${msg}</span> <i class="fas fa-times" onclick="this.parentElement.remove(); updateNCount()" style="color:var(--a); cursor:pointer"></i>`;
+            list.prepend(item);
+            updateNCount();
+            if(document.getElementById('tone-select').value !== 'off') console.log("Sound Played");
+        }
+
+        function updateNCount() {
+            const count = document.getElementById('notif-list').children.length;
+            document.getElementById('n-count').innerText = count;
+            document.getElementById('n-count').style.display = count > 0 ? 'block' : 'none';
+        }
+
+        function showPage(p) {
+            document.getElementById('main-dash').classList.add('hidden');
+            document.getElementById('profile-page').classList.add('hidden');
+            document.getElementById('security-page').classList.add('hidden');
+            if(p==='main') document.getElementById('main-dash').classList.remove('hidden');
+            if(p==='profile') { document.getElementById('profile-page').classList.remove('hidden'); loadStats(); }
+            if(p==='security') document.getElementById('security-page').classList.remove('hidden');
+            if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
+        }
+
         function toggleTheme() {
-            const theme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            const t = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', t);
+            localStorage.setItem('theme', t);
         }
 
-        function socialAction(platform) {
-            alert(`جاري الاتصال بـ ${platform}... سيتم فتح صفحة المتابعة باسمك.`);
-            loginSuccess();
+        function track(type) {
+            let c = parseInt(localStorage.getItem('c-'+type) || 0);
+            localStorage.setItem('c-'+type, c + 1);
+            addNotif(type === 'chat' ? "تم فتح الشات" : "بدء المعالجة...");
         }
 
-        function forgotPass() {
-            const email = prompt("أدخل بريدك الإلكتروني لإرسال كود التحقق عبر WhatsApp أو SMS:");
-            if(email) alert("تم إرسال الرابط! تفقد هاتفك الآن.");
+        function loadStats() {
+            document.getElementById('st-chat').innerText = localStorage.getItem('c-chat') || 0;
+            document.getElementById('st-code').innerText = localStorage.getItem('c-code') || 0;
+            document.getElementById('st-up').innerText = localStorage.getItem('c-up') || 0;
         }
 
-        function loginSuccess() {
-            const name = document.getElementById('email').value.split('@')[0] || 'Retag';
-            localStorage.setItem('userName', name);
-            localStorage.setItem('loggedIn', 'true');
-            location.reload();
-        }
-
+        function saveName() { const n = document.getElementById('p-name-in').value; if(n) { localStorage.setItem('user', n); location.reload(); } }
+        function setAv(s) { document.getElementById('p-img').src = s; localStorage.setItem('av', s); }
+        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
         function logout() { localStorage.clear(); location.reload(); }
 
-        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
-
         window.onload = () => {
-            const lang = localStorage.getItem('lang') || 'ar';
-            document.getElementById('html-tag').dir = lang === 'ar' ? 'rtl' : 'ltr';
-            document.getElementById('lang-select').value = lang;
-            if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
+            const l = localStorage.getItem('lang') || 'ar';
+            const d = dict[l];
+            document.getElementById('html-tag').dir = l === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-select').value = l;
+            document.getElementById('txt-sets').innerText = d.sets;
+            document.getElementById('txt-p').innerText = d.p;
+            document.getElementById('txt-s').innerText = d.s;
+            document.getElementById('txt-t').innerText = d.t;
+            document.getElementById('txt-n-title').innerText = d.n;
             
-            if(localStorage.getItem('loggedIn')) {
-                document.getElementById('intro-section').classList.add('hidden');
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-welcome').innerText = `${translations[lang].hi} ${localStorage.getItem('userName')} 👋`;
-            }
+            const name = localStorage.getItem('user') || 'ريتاج';
+            document.getElementById('user-hi').innerText = `${d.hi} ${name} 👋`;
+            document.getElementById('p-img').src = localStorage.getItem('av') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=1';
+            
+            if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
+            if(!localStorage.getItem('init')) { addNotif(d.welcome); localStorage.setItem('init', 'true'); }
         };
     </script>
 </body>
