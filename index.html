@@ -10,143 +10,135 @@
             --bg: #ffffff; --text: #222; --primary: #d4a373; --secondary: #faedcd; 
             --card: #fefae0; --footer: #333; --accent: #d4a373; --welcome-text: #000;
         }
-        /* دارك مود "أسود فاحم" مع موڤ */
+        /* الدارك مود: أسود فاحم جداً مع لمسات موڤ خفيفة */
         [data-theme="dark"] { 
-            --bg: #000000; --text: #ffffff; --primary: #bb86fc; 
-            --secondary: #050505; --card: #111111; --footer: #000; --accent: #bb86fc; --welcome-text: #fff;
+            --bg: #000000; --text: #ffffff; --primary: #9966cc; 
+            --secondary: #000000; --card: #0a0a0a; --footer: #000; --accent: #bb86fc; --welcome-text: #fff;
         }
         
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; scroll-behavior: smooth; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; overflow-x: hidden; }
         
-        nav { background: var(--primary); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .nav-links { display: flex; gap: 20px; }
+        nav { background: var(--primary); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
 
-        /* سكشن الترحيب والاحتفال */
+        /* شاشة الترحيب: حركة يمين وشمال */
         #welcome-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bg); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; 
         }
-        .spinning-hi { 
-            font-size: 60px; font-weight: bold; color: var(--welcome-text);
-            animation: spin 2s ease-in-out infinite; display: inline-block;
+        .rocking-hi { 
+            font-size: 70px; font-weight: bold; color: var(--welcome-text);
+            animation: rock 1.5s ease-in-out infinite;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* سكشن شرح الموقع (Hero) */
-        .site-intro { padding: 60px 20px; text-align: center; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200'); background-size: cover; color: white; display: none; }
-        .site-intro h2 { font-size: 36px; margin-bottom: 10px; color: var(--primary); }
-        .site-intro p { font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-
-        /* واجهة الفيس بوك الوهمية الاحترافية */
-        #fb-mock { 
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 400px; background: white; border-radius: 8px; box-shadow: 0 0 50px rgba(0,0,0,0.5); z-index: 3000; padding: 20px; color: #1c1e21; font-family: Helvetica, Arial, sans-serif;
+        @keyframes rock {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
         }
-        .fb-header { color: #1877f2; font-size: 30px; font-weight: bold; text-align: center; margin-bottom: 20px; }
-        .fb-input { width: 90%; padding: 12px; margin: 5px 0; border: 1px solid #dddfe2; border-radius: 6px; }
-        .fb-login-btn { background: #1877f2; color: white; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; margin-top: 10px; cursor: pointer; }
 
-        .login-container { background: var(--bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 350px; margin: 20px auto; border: 2px solid var(--primary); }
-        .option-card { background: var(--card); padding: 25px; border-radius: 15px; border: 2px solid var(--primary); transition: 0.3s; text-align: center; }
-        .theme-toggle, .lang-select { cursor: pointer; padding: 6px 12px; border-radius: 20px; border: none; background: white; color: var(--primary); font-weight: bold; }
-        .btn-email { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        footer { background: var(--footer); color: white; padding: 30px; text-align: center; }
-        .hidden { display: none; }
+        /* سكشن التعريف والصور (بيظهر للكل) */
+        .hero-intro { padding: 80px 20px; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.7), var(--secondary)), url('https://images.unsplash.com/photo-1620712943543-bcc4628c9759?auto=format&fit=crop&w=1200'); background-size: cover; color: white; }
+        .hero-intro h1 { font-size: 45px; color: var(--primary); margin-bottom: 20px; }
+        .hero-intro p { font-size: 20px; max-width: 900px; margin: 0 auto 30px; line-height: 1.8; }
+        .intro-imgs { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .intro-imgs img { width: 280px; height: 180px; border-radius: 15px; border: 3px solid var(--primary); transition: 0.5s; }
+        .intro-imgs img:hover { transform: scale(1.1); }
+
+        /* سكشن التسجيل (كبير وواضح) */
+        .login-section { display: flex; justify-content: center; padding: 60px 20px; }
+        .login-container { 
+            background: var(--bg); padding: 50px; border-radius: 30px; width: 100%; max-width: 500px; 
+            border: 4px solid var(--primary); box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align: center;
+        }
+        .login-container h2 { font-size: 32px; margin-bottom: 30px; }
+        input { width: 90%; padding: 15px; margin: 15px 0; border-radius: 10px; border: 1px solid #ccc; font-size: 16px; background: var(--bg); color: var(--text); }
+        .btn-main { background: var(--primary); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 18px; margin-top: 10px; }
+
+        /* الأوبشنات (مخفية في البداية) */
+        #options-section { display: none; padding: 60px 20px; text-align: center; }
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .option-card { background: var(--card); padding: 40px; border-radius: 20px; border: 2px solid var(--primary); transition: 0.4s; }
+        .option-card i { font-size: 50px; color: var(--primary); margin-bottom: 20px; }
+
+        footer { background: var(--footer); color: white; padding: 40px 20px; text-align: center; border-top: 2px solid var(--primary); }
+        .fb-pop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 380px; background: white; border-radius: 10px; z-index: 3000; padding: 25px; box-shadow: 0 0 100px #000; color: #000; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body id="main-body">
-
-    <div id="fb-mock">
-        <div class="fb-header">facebook</div>
-        <p style="text-align: center; font-size: 14px;">Log in to use your Facebook account with <b>RetaggFlow</b></p>
-        <input type="text" class="fb-input" placeholder="Email or phone number">
-        <input type="password" class="fb-input" placeholder="Password">
-        <button class="fb-login-btn" onclick="finalizeLogin('Facebook User')">Log In</button>
-        <div style="text-align: center; color: #1877f2; font-size: 14px; margin-top: 15px; cursor: pointer;">Forgotten password?</div>
-    </div>
+<body>
 
     <div id="welcome-overlay">
-        <div class="spinning-hi">Hi User!</div>
-        <p id="wait-msg" style="margin-top: 20px; font-weight: bold; color: var(--welcome-text);">Preparing your dashboard...</p>
+        <div class="rocking-hi">Hi User!</div>
+        <p style="color: var(--welcome-text); font-weight: bold; font-size: 18px;">Welcome to your creative space...</p>
     </div>
 
     <nav>
-        <div class="nav-links"><div id="nav-home">🏠 Home</div><div id="nav-support">🛠 Support</div></div>
+        <div style="font-weight: bold; font-size: 24px; color: white;">RetaggFlow</div>
         <div class="nav-right">
-            <select class="lang-select" id="lang-picker" onchange="changeLang(this.value)">
+            <select class="btn-main" style="width: auto; padding: 5px 15px; font-size: 14px;" onchange="changeLang(this.value)">
                 <option value="en">English</option>
                 <option value="ar">العربية</option>
                 <option value="fr">Français</option>
             </select>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+            <button class="btn-main" style="width: auto; padding: 5px 15px; font-size: 14px; background: white; color: var(--primary);" onclick="toggleTheme()">🌓 Theme</button>
         </div>
     </nav>
 
-    <section id="site-intro" class="site-intro">
-        <h2 id="intro-title">Welcome to RetaggFlow Pro</h2>
-        <p id="intro-desc">Your all-in-one AI power station. Debug code in seconds, chat with our advanced AI, and download assets instantly. Technology, simplified.</p>
+    <section class="hero-intro">
+        <h1 id="intro-title">Discover the Future of AI</h1>
+        <p id="intro-desc">Your premium destination for advanced AI assistance, instant code debugging, and media generation. We turn complex problems into simple solutions.</p>
+        <div class="intro-imgs">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400" alt="Tech">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400" alt="Laptop">
+            <img src="https://images.unsplash.com/photo-1618060932014-4eb9c9fc3ec1?auto=format&fit=crop&w=400" alt="Code">
+        </div>
     </section>
 
-    <section id="login-section">
+    <section id="login-section" class="login-section">
         <div class="login-container">
-            <h2 id="login-title">Login</h2>
-            <input type="email" id="email" placeholder="Email">
+            <h2 id="login-title">Login to Access Tools</h2>
+            <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn-email" onclick="finalizeLogin('User')" id="login-btn">Login</button>
-            <button class="btn-email" style="background: #1877f2; margin-top: 10px;" onclick="showFB()" id="fb-btn">
-                <i class="fab fa-facebook"></i> Facebook Login
+            <button class="btn-main" onclick="finalizeLogin('User')">Login</button>
+            <button class="btn-main" style="background: #1877f2; margin-top: 15px;" onclick="document.getElementById('fb-pop').style.display='block'">
+                <i class="fab fa-facebook"></i> Continue with Facebook
             </button>
         </div>
     </section>
 
-    <section id="home">
-        <h1 id="home-title">Our Services</h1>
-        <div class="home-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;">
+    <section id="options-section">
+        <h1 id="options-title" style="margin-bottom: 40px;">Professional Dashboard</h1>
+        <div class="home-grid">
             <div class="option-card">
-                <i class="fas fa-robot" style="font-size: 40px; color: var(--primary);"></i>
-                <h3 id="ai-title">Retag AI</h3>
-                <button class="btn-email" onclick="protectedAction('chat.html')" id="ai-btn">Chat Now</button>
+                <i class="fas fa-brain"></i>
+                <h3>Retag AI Assistant</h3>
+                <button class="btn-main" onclick="window.location.href='chat.html'">Open AI</button>
             </div>
             <div class="option-card">
-                <i class="fas fa-bug" style="font-size: 40px; color: var(--primary);"></i>
-                <h3 id="debug-title">Debugger</h3>
-                <button class="btn-email" onclick="protectedAction('#')" id="debug-btn">Fix Code</button>
+                <i class="fas fa-terminal"></i>
+                <h3>Instant Debugger</h3>
+                <button class="btn-main">Fix My Code</button>
             </div>
             <div class="option-card">
-                <i class="fas fa-download" style="font-size: 40px; color: var(--primary);"></i>
-                <h3 id="down-title">Downloader</h3>
-                <button class="btn-email" onclick="protectedAction('#')" id="down-btn">Download</button>
+                <i class="fas fa-cloud-download-alt"></i>
+                <h3>Smart Downloader</h3>
+                <button class="btn-main">Get Files</button>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 | <strong>By Retag Khaled</strong></p>
+        <p id="copy-text">جميع حقوق النشر محفوظة © 2026</p>
+        <p><strong>By Retag Khaled</strong></p>
     </footer>
 
+    <div id="fb-pop" class="fb-pop">
+        <h2 style="color: #1877f2; text-align: center;">facebook</h2>
+        <input type="text" placeholder="Mobile or Email" style="width: 90%; padding: 10px; margin: 10px 0;">
+        <input type="password" placeholder="Password" style="width: 90%; padding: 10px; margin: 10px 0;">
+        <button class="btn-main" style="background: #1877f2;" onclick="finalizeLogin('FB User')">Log In</button>
+    </div>
+
     <script>
-        const translations = {
-            en: { home: "🏠 Home", login: "Login", ai: "Retag AI", debug: "Debugger", down: "Downloader", introT: "Welcome to RetaggFlow Pro", introD: "Your all-in-one AI power station. Debug code in seconds and chat with AI." },
-            ar: { home: "🏠 الرئيسية", login: "تسجيل دخول", ai: "مساعد ريتاج", debug: "مصلح الأكواد", down: "التحميلات", introT: "مرحباً بك في RetaggFlow Pro", introD: "محطتك المتكاملة للذكاء الاصطناعي. أصلح أكوادك وتحدث مع مساعدنا الذكي في ثوانٍ." },
-            fr: { home: "🏠 Accueil", login: "Connexion", ai: "Retag AI", debug: "Débogage", down: "Téléchargeur", introT: "Bienvenue sur RetaggFlow Pro", introD: "Votre station IA tout-en-un. Déboguez du code et discutez avec l'IA en quelques secondes." }
-        };
-
-        function changeLang(lang) {
-            localStorage.setItem('lang', lang);
-            const t = translations[lang];
-            document.getElementById('nav-home').innerText = t.home;
-            document.getElementById('login-title').innerText = t.login;
-            document.getElementById('ai-title').innerText = t.ai;
-            document.getElementById('debug-title').innerText = t.debug;
-            document.getElementById('down-title').innerText = t.down;
-            document.getElementById('intro-title').innerText = t.introT;
-            document.getElementById('intro-desc').innerText = t.introD;
-            document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-        }
-
         function toggleTheme() {
             const body = document.body;
             const isDark = body.getAttribute('data-theme') === 'dark';
@@ -154,39 +146,34 @@
             localStorage.setItem('theme', isDark ? 'light' : 'dark');
         }
 
-        function showFB() { document.getElementById('fb-mock').style.display = 'block'; }
-
         function finalizeLogin(name) {
-            document.getElementById('fb-mock').style.display = 'none';
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', name);
-            
+            document.getElementById('fb-pop').style.display = 'none';
             const overlay = document.getElementById('welcome-overlay');
             overlay.style.display = 'flex';
-            
-            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
-
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             setTimeout(() => { location.reload(); }, 3000);
         }
 
-        function protectedAction(url) {
-            if (!localStorage.getItem('isLoggedIn')) {
-                alert("Login required!");
-                document.getElementById('login-section').scrollIntoView({ behavior: 'smooth' });
-            } else { if(url !== '#') window.location.href = url; }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
-            changeLang(localStorage.getItem('lang') || 'en');
-            
-            if (localStorage.getItem('isLoggedIn')) {
+            if(localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
+            if(localStorage.getItem('isLoggedIn')) {
                 document.getElementById('login-section').style.display = 'none';
-                document.getElementById('site-intro').style.display = 'block';
-                document.getElementById('lang-picker').value = localStorage.getItem('lang') || 'en';
+                document.getElementById('options-section').style.display = 'block';
             }
         });
+
+        const translations = {
+            en: { title: "Discover the Future", copy: "All Rights Reserved © 2026" },
+            ar: { title: "اكتشف مستقبل الذكاء الاصطناعي", copy: "جميع حقوق النشر محفوظة © 2026" },
+            fr: { title: "Découvrez le futur", copy: "Tous droits réservés © 2026" }
+        };
+
+        function changeLang(lang) {
+            document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('copy-text').innerText = translations[lang].copy;
+            document.getElementById('intro-title').innerText = translations[lang].title;
+        }
     </script>
 </body>
 </html>
