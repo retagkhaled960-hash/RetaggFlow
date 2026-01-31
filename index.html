@@ -1,62 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-tag">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RetaggFlow Pro</title>
     <style>
         :root { --bg: #ffffff; --text: #222; --primary: #d4a373; --secondary: #faedcd; --card: #fefae0; --footer: #333; }
-        [data-theme="dark"] { --bg: #121212; --text: #ffffff; --primary: #bb86fc; --secondary: #1e1e1e; --card: #2d2d2d; --footer: #000; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; }
+        [data-theme="dark"] { --bg: #121212; --text: #ffffff; --primary: #d4a373; --secondary: #1e1e1e; --card: #2d2d2d; --footer: #000; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; scroll-behavior: smooth; }
         nav { background: var(--primary); padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        nav a { color: white; text-decoration: none; font-weight: bold; margin-right: 15px; }
-        .theme-toggle { cursor: pointer; padding: 5px 15px; border-radius: 20px; border: none; background: white; color: var(--primary); font-weight: bold; }
+        nav a { color: white; text-decoration: none; font-weight: bold; margin-right: 15px; cursor: pointer; }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .theme-toggle, .lang-select { cursor: pointer; padding: 5px 10px; border-radius: 20px; border: none; background: white; color: var(--primary); font-weight: bold; font-size: 12px; }
         section { padding: 40px 20px; text-align: center; }
-        .login-container { background: var(--bg); padding: 25px; border-radius: 15px; max-width: 350px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-        .btn-email { background: var(--primary); color: white; width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .login-container { background: var(--bg); padding: 25px; border-radius: 15px; max-width: 350px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid var(--primary); }
+        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; background: var(--bg); color: var(--text); }
+        .btn-email { background: var(--primary); color: white; width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         .btn-fb { background: #1877f2; color: white; width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        .forgot-pass { font-size: 12px; color: var(--primary); text-decoration: none; display: block; margin-top: 10px; }
+        .forgot-pass { font-size: 12px; color: var(--primary); text-decoration: none; display: block; margin-top: 10px; font-weight: bold; }
         .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-        .option-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--primary); }
-        .option-card h3 { color: var(--primary); }
+        .option-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--primary); transition: 0.3s; }
+        .option-card:hover { transform: translateY(-5px); }
         footer { background: var(--footer); color: white; padding: 20px; text-align: center; margin-top: 50px; }
+        .user-info { color: white; font-size: 12px; margin-right: 10px; display: none; }
     </style>
 </head>
 <body>
     <nav>
-        <div class="links"><a href="#home">Home</a><a href="#support">Support</a></div>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓 Dark/Light</button>
+        <div class="links">
+            <a onclick="scrollToSection('home')" id="nav-home">Home</a>
+            <a onclick="scrollToSection('login')" id="nav-support">Login/Support</a>
+        </div>
+        <div class="nav-right">
+            <span id="welcome-user" class="user-info"></span>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="fr">Français</option>
+            </select>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+        </div>
     </nav>
 
     <section id="login">
         <div class="login-container">
-            <h2>Login</h2>
-            <input type="email" placeholder="Email Address">
-            <input type="password" placeholder="Password">
-            <button class="btn-email">Login with Email</button>
-            <button class="btn-fb">Login with Facebook</button>
-            <a href="#" class="forgot-pass">Forgot Password?</a>
+            <h2 id="login-title">Login</h2>
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn-email" onclick="handleLogin('email')" id="login-btn">Login with Email</button>
+            <button class="btn-fb" onclick="handleLogin('facebook')" id="fb-btn">Login with Facebook</button>
+            <a href="javascript:void(0)" onclick="forgotPass()" class="forgot-pass" id="forgot-text">Forgot Password?</a>
         </div>
     </section>
 
     <section id="home">
-        <h1>Home Options</h1>
+        <h1 id="home-title">Home Options</h1>
         <div class="home-grid">
             <div class="option-card">
-                <h3>Retag AI Assistant</h3>
-                <p>Chat with my custom AI assistant here.</p>
-                <button class="btn-email" onclick="window.location.href='chat.html'">Chat with Retag AI</button>
+                <h3 id="ai-title">Retag AI Assistant</h3>
+                <p id="ai-desc">Chat with my custom AI assistant here.</p>
+                <button class="btn-email" onclick="protectedAction('chat.html')" id="ai-btn">Chat with Retag AI</button>
             </div>
             <div class="option-card">
-                <h3>Code Debugger</h3>
-                <p>Paste your code to find errors and fix them instantly.</p>
-                <button class="btn-email">Check Code</button>
+                <h3 id="debug-title">Code Debugger</h3>
+                <p id="debug-desc">Paste your code to find errors and fix them instantly.</p>
+                <button class="btn-email" onclick="protectedAction('#')" id="debug-btn">Check Code</button>
             </div>
             <div class="option-card">
-                <h3>AI Downloader</h3>
-                <p>Download AI-generated images and videos easily.</p>
-                <button class="btn-email">Download</button>
+                <h3 id="down-title">AI Downloader</h3>
+                <p id="down-desc">Download AI-generated images and videos easily.</p>
+                <button class="btn-email" onclick="protectedAction('#')" id="down-btn">Download</button>
             </div>
         </div>
     </section>
@@ -67,9 +80,100 @@
     </footer>
 
     <script>
+        // 1. حفظ الدارك مود واللغة
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const savedLang = localStorage.getItem('lang') || 'en';
+            if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+            changeLang(savedLang);
+            checkUserStatus();
+        });
+
         function toggleTheme() {
             const body = document.body;
-            body.getAttribute('data-theme') === 'dark' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // 2. نظام التسجيل (محاكاة العمل)
+        function handleLogin(type) {
+            const email = document.getElementById('email').value;
+            if (type === 'email' && !email.includes('@')) {
+                alert(currentLang === 'ar' ? 'برجاء إدخال إيميل صحيح' : 'Please enter a valid email');
+                return;
+            }
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', email.split('@')[0] || 'User');
+            alert(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Login Successful!');
+            location.reload();
+        }
+
+        function forgotPass() {
+            alert(currentLang === 'ar' ? 'تم إرسال رابط استعادة كلمة السر للإيميل' : 'Password reset link sent to your email');
+        }
+
+        function checkUserStatus() {
+            const logged = localStorage.getItem('isLoggedIn');
+            if (logged) {
+                document.getElementById('welcome-user').innerText = "Hi, " + localStorage.getItem('userName');
+                document.getElementById('welcome-user').style.display = "block";
+                document.getElementById('login').style.display = "none";
+            }
+        }
+
+        // 3. حماية الأزرار والطلوع للتسجيل
+        function protectedAction(url) {
+            if (!localStorage.getItem('isLoggedIn')) {
+                alert(currentLang === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
+                scrollToSection('login');
+            } else {
+                if (url !== '#') window.location.href = url;
+            }
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 4. نظام اللغات
+        let currentLang = 'en';
+        const translations = {
+            en: {
+                home: "Home", loginT: "Login", loginB: "Login with Email", fb: "Login with Facebook",
+                forgot: "Forgot Password?", homeT: "Home Options", aiT: "Retag AI Assistant",
+                aiD: "Chat with my custom AI assistant here.", aiBtn: "Chat with Retag AI",
+                debT: "Code Debugger", debD: "Find errors and fix them instantly.", debBtn: "Check Code"
+            },
+            ar: {
+                home: "الرئيسية", loginT: "تسجيل الدخول", loginB: "دخول بالإيميل", fb: "دخول بفيسبوك",
+                forgot: "نسيت كلمة السر؟", homeT: "خيارات الموقع", aiT: "مساعد ريتاج الذكي",
+                aiD: "تحدث مع الذكاء الاصطناعي الخاص بي هنا.", aiBtn: "ابدأ الدردشة",
+                debT: "فاحص الأكواد", debD: "ضع كودك هنا وسنقوم بتصليح الأخطاء فوراً.", debBtn: "افحص الكود"
+            }
+        };
+
+        function changeLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            const t = translations[lang] || translations['en'];
+            document.getElementById('nav-home').innerText = t.home;
+            document.getElementById('login-title').innerText = t.loginT;
+            document.getElementById('login-btn').innerText = t.loginB;
+            document.getElementById('fb-btn').innerText = t.fb;
+            document.getElementById('forgot-text').innerText = t.forgot;
+            document.getElementById('home-title').innerText = t.homeT;
+            document.getElementById('ai-title').innerText = t.aiT;
+            document.getElementById('ai-desc').innerText = t.aiD;
+            document.getElementById('ai-btn').innerText = t.aiBtn;
+            document.getElementById('debug-title').innerText = t.debT;
+            document.getElementById('debug-desc').innerText = t.debD;
+            document.getElementById('debug-btn').innerText = t.debBtn;
+            document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
         }
     </script>
 </body>
