@@ -19,36 +19,44 @@
         
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--secondary); color: var(--text); transition: 0.3s; overflow-x: hidden; }
         
-        /* الهيدر مع الـ 3 شرط */
         nav { background: var(--primary); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .menu-icon { font-size: 28px; color: white; cursor: pointer; display: block; }
+        .menu-icon { font-size: 28px; color: white; cursor: pointer; }
         
-        /* القائمة الجانبية (Sidebar) */
+        /* القائمة الجانبية - حل مشكلة الاختفاء */
         .sidebar { 
-            position: fixed; top: 0; left: -300px; width: 280px; height: 100%; 
+            position: fixed; top: 0; width: 280px; height: 100%; 
             background: var(--sidebar-bg); z-index: 2000; transition: 0.4s; 
             box-shadow: 5px 0 15px rgba(0,0,0,0.3); padding: 20px;
+            visibility: hidden; /* مخفية تماماً وهي مقفولة */
         }
-        .sidebar.active { left: 0; }
-        [dir="rtl"] .sidebar { left: auto; right: -300px; box-shadow: -5px 0 15px rgba(0,0,0,0.3); }
-        [dir="rtl"] .sidebar.active { right: 0; }
+        /* وضع القائمة لليسار (EN) */
+        #html-tag[dir="ltr"] .sidebar { left: -300px; }
+        #html-tag[dir="ltr"] .sidebar.active { left: 0; visibility: visible; }
+        /* وضع القائمة لليمين (AR) */
+        #html-tag[dir="rtl"] .sidebar { right: -300px; left: auto; }
+        #html-tag[dir="rtl"] .sidebar.active { right: 0; visibility: visible; }
 
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
-        .sidebar-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; text-decoration: none; color: var(--text); font-weight: 500; }
+        .sidebar-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; color: var(--text); font-weight: 500; }
         .sidebar-item:hover { background: var(--primary); color: white; }
-        .sidebar-item i { width: 25px; font-size: 20px; }
 
-        /* باقي التنسيقات */
+        /* شاشة الترحيب */
         #welcome-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 3000; flex-direction: column; align-items: center; justify-content: center; }
         .rocking-hi { font-size: 70px; font-weight: bold; color: var(--welcome-text); animation: rock 1.5s ease-in-out infinite; }
         @keyframes rock { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
 
-        .hero-intro { padding: 80px 20px; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--secondary)), url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1200'); background-size: cover; color: white; }
+        /* سكشن التسجيل - الآن هو الأول */
+        .login-section { display: flex; justify-content: center; padding: 40px 20px; background: var(--secondary); }
+        .login-container { background: var(--bg); padding: 50px; border-radius: 30px; width: 90%; max-width: 450px; border: 4px solid var(--primary); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 1px solid #ccc; background: var(--bg); color: var(--text); }
+        .btn-main { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+
+        /* سكشن الصور والشرح - الآن هو الثاني */
+        .hero-intro { padding: 60px 20px; text-align: center; }
+        .hero-intro h1 { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
+        .intro-imgs { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
         .intro-imgs img { width: 280px; height: 180px; border-radius: 15px; border: 2px solid var(--primary); object-fit: cover; }
 
-        .login-container { background: var(--bg); padding: 50px; border-radius: 30px; width: 90%; max-width: 450px; margin: 50px auto; border: 4px solid var(--primary); text-align: center; }
-        .btn-main { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        
         #options-section { display: none; padding: 60px 20px; text-align: center; }
         .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
         .option-card { background: var(--card); padding: 40px; border-radius: 20px; border: 2px solid var(--primary); }
@@ -68,11 +76,8 @@
             <h3 id="menu-title">Settings</h3>
             <i class="fas fa-times" style="cursor:pointer; font-size:24px" onclick="toggleMenu()"></i>
         </div>
-        
         <div class="sidebar-item"><i class="fas fa-user-circle"></i> <span id="side-account">My Account</span></div>
-        
         <div class="sidebar-item" onclick="toggleTheme()"><i class="fas fa-moon"></i> <span id="side-theme">Dark/Light Mode</span></div>
-        
         <div class="sidebar-item">
             <i class="fas fa-globe"></i>
             <select id="lang-picker" onchange="changeLang(this.value)" style="border:none; background:transparent; color:inherit; font-weight:bold; cursor:pointer">
@@ -81,12 +86,8 @@
                 <option value="fr">Français</option>
             </select>
         </div>
-
-        <div class="sidebar-item"><i class="fas fa-shield-alt"></i> <span id="side-security">Security & Privacy</span></div>
-        <div class="sidebar-item"><i class="fas fa-bell"></i> <span id="side-notify">Notifications</span></div>
-        <div class="sidebar-item"><i class="fas fa-question-circle"></i> <span id="side-help">Help Center</span></div>
-        
-        <div class="sidebar-item" id="side-logout" onclick="logout()" style="color: #ff4444; margin-top: 50px;">
+        <div class="sidebar-item"><i class="fas fa-shield-alt"></i> <span id="side-security">Security</span></div>
+        <div class="sidebar-item" id="side-logout" onclick="logout()" style="color: #ff4444; margin-top: 50px; display:none;">
             <i class="fas fa-sign-out-alt"></i> <span id="side-logout-text">Logout</span>
         </div>
     </div>
@@ -99,17 +100,8 @@
     <nav>
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <div style="font-weight: bold; font-size: 24px; color: white;">RetaggFlow</div>
-        <div style="width: 28px;"></div> </nav>
-
-    <section class="hero-intro">
-        <h1 id="intro-title">Discover the Future of AI</h1>
-        <p id="intro-desc">Advanced AI assistance, instant code debugging, and media generation.</p>
-        <div class="intro-imgs">
-            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400" alt="Tech">
-            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400" alt="Laptop">
-            <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&w=400" alt="Code">
-        </div>
-    </section>
+        <div style="width: 28px;"></div>
+    </nav>
 
     <section id="login-section" class="login-section">
         <div class="login-container">
@@ -117,6 +109,16 @@
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Password">
             <button class="btn-main" id="login-submit" onclick="finalizeLogin('User')">Login</button>
+        </div>
+    </section>
+
+    <section id="hero-section" class="hero-intro">
+        <h1 id="intro-title">Discover the Future of AI</h1>
+        <p id="intro-desc">Advanced AI assistance, instant code debugging, and media generation.</p>
+        <div class="intro-imgs">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400" alt="Tech">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400" alt="Laptop">
+            <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&w=400" alt="Code">
         </div>
     </section>
 
@@ -144,19 +146,19 @@
             en: {
                 introT: "Discover the Future of AI", introP: "Advanced AI assistance and more.",
                 loginT: "Login", loginB: "Login", optT: "Dashboard",
-                sideAcc: "My Account", sideTheme: "Theme Mode", sideSec: "Security", sideNot: "Notifications", sideHelp: "Help Center", sideOut: "Logout",
+                sideAcc: "My Account", sideTheme: "Theme Mode", sideSec: "Security", sideOut: "Logout",
                 copy: "All Rights Reserved © 2026", welcome: "Loading...", menu: "Settings"
             },
             ar: {
                 introT: "اكتشف مستقبل الذكاء الاصطناعي", introP: "مساعد الذكاء الاصطناعي المتقدم وأكثر.",
                 loginT: "تسجيل الدخول", loginB: "دخول", optT: "لوحة التحكم",
-                sideAcc: "حسابي", sideTheme: "وضع الثيم", sideSec: "الأمان والخصوصية", sideNot: "الإشعارات", sideHelp: "مركز المساعدة", sideOut: "تسجيل الخروج",
+                sideAcc: "حسابي", sideTheme: "وضع الثيم", sideSec: "الأمان والخصوصية", sideOut: "تسجيل الخروج",
                 copy: "جميع حقوق النشر محفوظة © 2026", welcome: "جاري التحميل...", menu: "الإعدادات"
             },
             fr: {
                 introT: "Découvrez le futur", introP: "Assistance IA avancée et plus.",
                 loginT: "Connexion", loginB: "Entrer", optT: "Tableau de bord",
-                sideAcc: "Mon Compte", sideTheme: "Mode Thème", sideSec: "Sécurité", sideNot: "Notifications", sideHelp: "Aide", sideOut: "Déconnexion",
+                sideAcc: "Mon Compte", sideTheme: "Mode Thème", sideSec: "Sécurité", sideOut: "Déconnexion",
                 copy: "Tous droits réservés © 2026", welcome: "Chargement...", menu: "Paramètres"
             }
         };
@@ -173,8 +175,6 @@
             document.getElementById('side-account').innerText = t.sideAcc;
             document.getElementById('side-theme').innerText = t.sideTheme;
             document.getElementById('side-security').innerText = t.sideSec;
-            document.getElementById('side-notify').innerText = t.sideNot;
-            document.getElementById('side-help').innerText = t.sideHelp;
             document.getElementById('side-logout-text').innerText = t.sideOut;
             document.getElementById('copy-text').innerText = t.copy;
             document.getElementById('welcome-msg').innerText = t.welcome;
@@ -205,9 +205,8 @@
             if(localStorage.getItem('isLoggedIn')) {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('options-section').style.display = 'block';
+                document.getElementById('hero-section').style.display = 'block';
                 document.getElementById('side-logout').style.display = 'flex';
-            } else {
-                document.getElementById('side-logout').style.display = 'none';
             }
         });
     </script>
