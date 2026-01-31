@@ -70,6 +70,14 @@
         <button onclick="alert('تم إرسال الكود!'); closePopup('forget-popup')" style="width:100%; padding:12px; background:var(--p); color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">إرسال</button>
         <button onclick="closePopup('forget-popup')" style="width:100%; background:none; border:none; color:var(--a); margin-top:10px; cursor:pointer;">إلغاء</button>
     </div>
+<div id="demo-popup" class="fake-popup">
+    <h3 style="text-align:center; margin-bottom:15px;">طلب عرض توضيحي</h3>
+    <p style="font-size:12px; opacity:0.8; text-align:center; margin-bottom:15px;">سنتواصل معك لترتيب عرض حي لـ Retag AI</p>
+    <input type="text" placeholder="الاسم بالكامل" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--p); background: var(--c); color: var(--t);">
+    <input type="email" placeholder="البريد الإلكتروني أو رقم الهاتف" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--p); background: var(--c); color: var(--t);">
+    <button onclick="alert('تم استلام طلبك! سنتواصل معك قريباً.'); closePopup('demo-popup')" style="width:100%; padding:12px; background:var(--p); color:#fff; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إرسال الطلب</button>
+    <button onclick="closePopup('demo-popup')" style="width:100%; background:none; border:none; color:var(--t); margin-top:10px; cursor:pointer;">إلغاء</button>
+</div>
 
     <nav>
         <div class="logo">RETAG <i class="fas fa-bolt"></i> AI</div>
@@ -84,7 +92,8 @@
     </p>
     <div style="display: flex; justify-content: center; gap: 15px;">
         <button onclick="document.getElementById('login-page').scrollIntoView()" style="padding: 12px 30px; border-radius: 50px; border: none; background: var(--p); color: #fff; font-weight: bold; cursor: pointer;">Get Started</button>
-        <button style="padding: 12px 30px; border-radius: 50px; border: 1px solid var(--p); background: transparent; color: var(--t); font-weight: bold; cursor: pointer;">Request a Demo</button>
+        <button onclick="openPopup('demo-popup')" style="padding: 12px 30px; border-radius: 50px; border: 1px solid var(--p); background: transparent; color: var(--t); font-weight: bold; cursor: pointer;">Request a Demo</button>
+
     </div>
 </div>
 
