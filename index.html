@@ -3,199 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retag AI | Premium Platform</title>
+    <title>Retag AI | Pro Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #9966cc; --accent: #ff4444; --bg: #050505; --text: #ffffff; --glass: rgba(255, 255, 255, 0.05);
-        }
-        [data-theme="light"] {
-            --bg: #f5f5f5; --text: #222222; --glass: rgba(0, 0, 0, 0.05);
-        }
+        :root { --primary: #9966cc; --accent: #ff4444; --bg: #050505; --text: #fff; --glass: rgba(255,255,255,0.05); }
+        [data-theme="light"] { --bg: #f8f9fa; --text: #222; --glass: rgba(0,0,0,0.05); }
 
         body { 
-            margin: 0; background-color: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif;
+            margin: 0; background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: 0.3s;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L55 25 L40 35 L45 55 L30 45 L15 55 L20 35 L5 25 L25 25 Z' fill='%239966cc' fill-opacity='0.03'/%3E%3C/svg%3E");
-            transition: 0.3s; overflow-x: hidden;
         }
 
-        /* شاشة التحميل */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .loader-content { font-family: 'Orbitron'; font-size: 3rem; color: var(--primary); transform: translateX(100vw); animation: slideExplode 2s forwards; }
-        @keyframes slideExplode { 0% { transform: translateX(100vw); opacity: 0; } 50% { transform: translateX(0) scale(1.2); opacity: 1; } 100% { transform: scale(10); opacity: 0; visibility: hidden; } }
+        /* سرعة الإعدادات */
+        .sidebar { 
+            position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg); 
+            z-index: 5000; transition: transform 0.2s ease-out; /* تسريع الحركة */
+            padding: 25px; border-inline-start: 2px solid var(--primary); 
+        }
+        #html-tag[dir="rtl"] .sidebar { left: -320px; transform: translateX(0); }
+        #html-tag[dir="rtl"] .sidebar.active { transform: translateX(320px); }
+        #html-tag[dir="ltr"] .sidebar { right: -320px; transform: translateX(0); }
+        #html-tag[dir="ltr"] .sidebar.active { transform: translateX(-320px); }
 
-        /* الهيدر */
-        nav { background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Orbitron'; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
-
-        /* القائمة الجانبية المخفية */
-        .sidebar { position: fixed; top: 0; width: 300px; height: 100%; background: var(--bg); z-index: 5000; transition: 0.5s; padding: 25px; border-inline-start: 2px solid var(--primary); box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
-        #html-tag[dir="rtl"] .sidebar { left: -350px; }
-        #html-tag[dir="rtl"] .sidebar.active { left: 0; }
-        #html-tag[dir="ltr"] .sidebar { right: -350px; }
-        #html-tag[dir="ltr"] .sidebar.active { right: 0; }
-
-        .btn-red { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 10px; }
-        .close-x { color: var(--accent); font-size: 28px; cursor: pointer; float: left; }
-
-        /* الإشعارات */
-        .notif-box { position: fixed; top: 70px; left: 20px; width: 280px; background: var(--bg); border: 1px solid var(--primary); border-radius: 15px; padding: 15px; display: none; z-index: 4000; }
-
-        .option-card { background: var(--glass); padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
-        .option-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        
+        .option-card { background: var(--glass); padding: 30px; border-radius: 20px; text-align: center; transition: 0.3s; border: 1px solid transparent; }
+        .option-card:hover { border-color: var(--primary); transform: scale(1.02); }
         .hidden { display: none !important; }
+        .btn-red { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="preloader"><div class="loader-content">RETAG <i class="fas fa-bolt"></i> AI</div></div>
-
-    <nav>
-        <div class="logo">RETAG <i class="fas fa-bolt"></i> AI</div>
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <i class="fas fa-bell" onclick="toggleNotif()" style="cursor:pointer; color: var(--primary);"></i>
-            <span id="user-hi" class="hidden"></span>
+    <nav style="padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px);">
+        <div style="font-family: 'Orbitron'; font-size: 1.5rem;">RETAG <i class="fas fa-bolt" style="color:var(--primary)"></i> AI</div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <span id="user-hi" style="font-weight: bold;"></span>
             <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer; font-size: 22px;"></i>
         </div>
     </nav>
 
     <div id="sidebar" class="sidebar">
-        <span class="close-x" onclick="toggleMenu()">×</span>
-        <h2 id="txt-settings" style="margin-top:50px;">الإعدادات</h2>
-        
+        <span onclick="toggleMenu()" style="color:var(--accent); font-size: 30px; cursor:pointer;">×</span>
+        <h2 id="txt-settings" style="margin-top:40px;">الإعدادات</h2>
         <div onclick="showProfile()" style="padding:15px; cursor:pointer;"><i class="fas fa-user-circle"></i> <span id="txt-profile">الملف الشخصي</span></div>
-        <div onclick="toggleTheme()" style="padding:15px; cursor:pointer;"><i class="fas fa-adjust"></i> <span id="txt-theme">تغيير الوضع (Dark/Light)</span></div>
-        
+        <div onclick="toggleTheme()" style="padding:15px; cursor:pointer;"><i class="fas fa-moon"></i> <span id="txt-theme">الوضع الليلي</span></div>
         <div style="margin-top:20px;">
-            <label id="txt-lang-label">اللغة / Language:</label>
-            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:10px; background:#222; color:white; border-radius:8px;">
+            <select onchange="changeLang(this.value)" id="lang-select" style="width:100%; padding:10px; background:#222; color:white; border-radius:8px; border:1px solid var(--primary);">
                 <option value="ar">🇪🇬 العربية</option>
                 <option value="en">🇺🇸 English</option>
                 <option value="fr">🇫🇷 Français</option>
             </select>
         </div>
-
-        <button class="btn-red" onclick="logout()" style="margin-top:50px;"><i class="fas fa-sign-out-alt"></i> <span id="txt-logout">تسجيل الخروج</span></button>
+        <button class="btn-red" onclick="logout()" style="margin-top:40px;">Logout</button>
     </div>
 
-    <div id="notif-box" class="notif-box">
-        <h4 id="txt-notif-title">الإشعارات</h4>
-        <div id="notif-items">
-            <div style="font-size:12px; border-bottom:1px solid #333; padding:5px;">Welcome to Retag AI <i class="fas fa-trash" style="float:left; color:red; cursor:pointer;"></i></div>
-        </div>
-    </div>
-
-    <section id="login-area" style="padding: 50px 5%; text-align: center;">
-        <h1 id="txt-hero">مستقبلك يبدأ هنا</h1>
-        <div style="max-width:400px; margin:auto; background:var(--glass); padding:30px; border-radius:20px;">
-            <button class="btn-red" style="background:#fff; color:#333;" onclick="socialLogin()"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="15"> Google</button>
-            <button class="btn-red" style="background:#1877f2;" onclick="socialLogin()"><i class="fab fa-facebook"></i> Facebook</button>
-            <input type="email" id="email" placeholder="Email" style="width:100%; padding:12px; margin:15px 0; border-radius:8px; border:none; background:#111; color:white;">
-            <button class="btn-red" style="background:var(--primary);" onclick="doLogin()">Login</button>
+    <section id="main-options" style="padding:40px 5%;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px;">
+            <div class="option-card">
+                <i class="fas fa-brain" style="font-size:40px; color:var(--primary);"></i>
+                <h3 id="txt-ai-title">الذكاء الاصطناعي</h3>
+                <p id="txt-ai-desc">شات ذكي متطور جداً</p>
+            </div>
+            <div class="option-card">
+                <i class="fas fa-code" style="font-size:40px; color:var(--primary);"></i>
+                <h3 id="txt-code-title">إصلاح الكود</h3>
+                <p id="txt-code-desc">اكتشف الأخطاء برمجياً فوراً</p>
+            </div>
+            <div class="option-card">
+                <i class="fas fa-upload" style="font-size:40px; color:var(--primary);"></i>
+                <h3 id="txt-up-title">رفع الملفات</h3>
+                <p id="txt-up-desc">تحليل الصور والفيديو بالذكاء</p>
+            </div>
         </div>
     </section>
 
-    <section id="main-options" class="hidden" style="padding:40px 5%;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px;">
-            <div class="option-card"><i class="fas fa-brain"></i><h3 id="txt-ai-btn">الذكاء الاصطناعي</h3><p id="txt-ai-desc">شات ذكي متطور</p></div>
-            <div class="option-card"><i class="fas fa-code"></i><h3 id="txt-code-btn">إصلاح الكود</h3><p id="txt-code-desc">اكتشف الأخطاء برمجياً</p></div>
-            <div class="option-card"><i class="fas fa-upload"></i><h3 id="txt-up-btn">رفع الملفات</h3><p id="txt-up-desc">تحليل الصور والفيديو</p></div>
-        </div>
-    </section>
-
-    <section id="profile-area" class="hidden" style="padding:40px 5%; text-align:center;">
-        <div style="background:var(--glass); padding:30px; border-radius:25px; max-width:500px; margin:auto;">
+    <section id="profile-area" class="hidden" style="padding:50px 5%; text-align:center;">
+        <div style="background:var(--glass); padding:30px; border-radius:20px; max-width:400px; margin:auto;">
             <div style="position:relative; display:inline-block;">
                 <img id="user-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" style="width:120px; height:120px; border-radius:50%; border:3px solid var(--primary); object-fit:cover;">
                 <label for="img-upload" style="position:absolute; bottom:0; right:0; background:var(--primary); padding:8px; border-radius:50%; cursor:pointer;"><i class="fas fa-camera"></i></label>
                 <input type="file" id="img-upload" style="display:none;" onchange="uploadPhoto(this)">
             </div>
-            <h2 id="user-name-display">User</h2>
-            <div style="display:flex; justify-content:space-around; margin-top:20px;">
-                <div><i class="fas fa-robot"></i> <span id="count-ai">0</span></div>
-                <div><i class="fas fa-code"></i> <span id="count-code">0</span></div>
-            </div>
+            <h2 id="user-name-disp">User</h2>
             <button class="btn-red" style="background:#555; margin-top:20px;" onclick="hideProfile()">Back</button>
         </div>
     </section>
 
     <script>
-        // القاموس (Translation System)
-        const dictionary = {
-            ar: { hero: "مستقبلك يبدأ هنا", settings: "الإعدادات", profile: "الملف الشخصي", theme: "تغيير الوضع", lang: "اللغة", logout: "خروج", ai: "الذكاء الاصطناعي", code: "إصلاح الكود", up: "رفع الملفات", hi: "هاي" },
-            en: { hero: "Your future starts here", settings: "Settings", profile: "Profile", theme: "Switch Theme", lang: "Language", logout: "Logout", ai: "Retag AI Chat", code: "Code Fixer", up: "Media Upload", hi: "Hi" },
-            fr: { hero: "Votre avenir commence ici", settings: "Paramètres", profile: "Profil", theme: "Changer Thème", lang: "Langue", logout: "Déconnexion", ai: "Retag AI Chat", code: "Réparateur de code", up: "Télécharger", hi: "Salut" }
+        const dict = {
+            ar: { settings:"الإعدادات", profile:"الملف الشخصي", theme:"الوضع الليلي", aiT:"الذكاء الاصطناعي", aiD:"شات ذكي متطور جداً", codeT:"إصلاح الكود", codeD:"اكتشف الأخطاء برمجياً فوراً", upT:"رفع الملفات", upD:"تحليل الصور والفيديو بالذكاء", hi:"هاي" },
+            en: { settings:"Settings", profile:"Profile", theme:"Dark Mode", aiT:"Retag AI Chat", aiD:"Advanced AI Assistant", codeT:"Code Fixer", codeD:"Find and fix bugs instantly", upT:"Media Upload", upD:"AI Image & Video Analysis", hi:"Hi" },
+            fr: { settings:"Paramètres", profile:"Profil", theme:"Mode Sombre", aiT:"Retag AI Chat", aiD:"Assistant IA avancé", codeT:"Réparateur de code", codeD:"Trouvez les erreurs instantanément", upT:"Télécharger", upD:"Analyse Image & Vidéo IA", hi:"Salut" }
         };
 
-        function updateUI(lang) {
-            const d = dictionary[lang];
-            document.getElementById('txt-hero').innerText = d.hero;
+        function updateLang() {
+            const l = localStorage.getItem('lang') || 'ar';
+            const d = dict[l];
             document.getElementById('txt-settings').innerText = d.settings;
             document.getElementById('txt-profile').innerText = d.profile;
             document.getElementById('txt-theme').innerText = d.theme;
-            document.getElementById('txt-logout').innerText = d.logout;
-            document.getElementById('txt-ai-btn').innerText = d.ai;
-            document.getElementById('txt-code-btn').innerText = d.code;
-            document.getElementById('txt-up-btn').innerText = d.up;
-            if(localStorage.getItem('isLoggedIn')) {
-                document.getElementById('user-hi').innerText = `${d.hi} ${localStorage.getItem('userName')} 👋`;
-            }
+            document.getElementById('txt-ai-title').innerText = d.aiT;
+            document.getElementById('txt-ai-desc').innerText = d.aiD;
+            document.getElementById('txt-code-title').innerText = d.codeT;
+            document.getElementById('txt-code-desc').innerText = d.codeD;
+            document.getElementById('txt-up-title').innerText = d.upT;
+            document.getElementById('txt-up-desc').innerText = d.upD;
+            document.getElementById('user-hi').innerText = `${d.hi} ${localStorage.getItem('userName') || 'User'} 👋`;
         }
-
-        window.onload = () => { 
-            setTimeout(() => document.getElementById('preloader').style.display = 'none', 2000);
-            const savedLang = localStorage.getItem('lang') || 'ar';
-            document.getElementById('lang-select').value = savedLang;
-            document.getElementById('html-tag').dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-            updateUI(savedLang);
-            if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
-            checkLogin();
-        };
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function toggleNotif() { const b = document.getElementById('notif-box'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
-        
-        function toggleTheme() {
-            const current = document.body.getAttribute('data-theme');
-            const target = current === 'light' ? 'dark' : 'light';
-            document.body.setAttribute('data-theme', target);
-            localStorage.setItem('theme', target);
-        }
-
-        function doLogin() {
-            const name = document.getElementById('email').value.split('@')[0] || 'User';
-            localStorage.setItem('userName', name);
-            localStorage.setItem('isLoggedIn', 'true');
-            location.reload();
-        }
-
-        function checkLogin() {
-            if(localStorage.getItem('isLoggedIn')) {
-                document.getElementById('login-area').classList.add('hidden');
-                document.getElementById('main-options').classList.remove('hidden');
-                document.getElementById('user-hi').classList.remove('hidden');
-                document.getElementById('user-name-display').innerText = localStorage.getItem('userName');
-                document.getElementById('user-img').src = localStorage.getItem('userPhoto') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=1';
-            }
-        }
-
+        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
         function uploadPhoto(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('user-img').src = e.target.result;
-                    localStorage.setItem('userPhoto', e.target.result);
-                };
+                reader.onload = (e) => { document.getElementById('user-img').src = e.target.result; localStorage.setItem('userPhoto', e.target.result); };
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        function changeLang(l) { localStorage.setItem('lang', l); location.reload(); }
         function showProfile() { document.getElementById('profile-area').classList.remove('hidden'); document.getElementById('main-options').classList.add('hidden'); toggleMenu(); }
         function hideProfile() { document.getElementById('profile-area').classList.add('hidden'); document.getElementById('main-options').classList.remove('hidden'); }
-        function logout() { localStorage.clear(); location.reload(); }
+        
+        window.onload = () => {
+            const l = localStorage.getItem('lang') || 'ar';
+            document.getElementById('lang-select').value = l;
+            document.getElementById('html-tag').dir = l === 'ar' ? 'rtl' : 'ltr';
+            updateLang();
+            document.getElementById('user-name-disp').innerText = localStorage.getItem('userName') || 'User';
+            document.getElementById('user-img').src = localStorage.getItem('userPhoto') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=1';
+        };
     </script>
 </body>
 </html>
