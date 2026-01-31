@@ -1,175 +1,296 @@
 <!DOCTYPE html>
-<html lang="en" id="html-tag">
+<html lang="ar" id="html-tag" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retag AI | Premium Experience</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Retag AI | Premium Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
     <style>
-        :root { 
-            --bg: #f8f9fa; --text: #222; --primary: #d4a373; --glass: rgba(255, 255, 255, 0.7);
-            --sidebar-bg: #ffffff; --card-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-        }
-        [data-theme="dark"] { 
-            --bg: #000000; --text: #ffffff; --primary: #9966cc; --glass: rgba(15, 15, 15, 0.6);
-            --sidebar-bg: #0a0a0a; --card-shadow: 0 8px 32px rgba(153, 102, 204, 0.3);
+        :root {
+            --primary: #9966cc; --accent: #ff4444; --bg: #050505; --glass: rgba(255, 255, 255, 0.05);
+            --font-main: 'Cairo', sans-serif; --font-logo: 'Orbitron', sans-serif;
         }
 
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); transition: 0.4s; overflow-x: hidden; }
-
-        /* شاشة التحميل */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .loader-logo { color: var(--primary); font-size: 32px; font-weight: bold; letter-spacing: 2px; animation: pulse 1.5s infinite; }
-        .loader-logo span { color: #fff; margin-left: 5px; font-style: italic; }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
-
-        /* تأثير الزجاج القوي */
-        .glass-card { 
-            background: var(--glass); 
-            backdrop-filter: blur(20px) saturate(180%); 
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: var(--card-shadow); 
-            border-radius: 25px; 
+        body { 
+            margin: 0; background-color: var(--bg); color: white; font-family: var(--font-main);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L55 25 L40 35 L45 55 L30 45 L15 55 L20 35 L5 25 L25 25 Z' fill='%239966cc' fill-opacity='0.03'/%3E%3C/svg%3E");
+            overflow-x: hidden;
         }
 
-        nav { background: var(--primary); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .nav-user-img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid white; object-fit: cover; cursor: pointer; }
+        /* 1. شاشة التحميل الاحترافية */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+            z-index: 10000; display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+        .loader-content { 
+            font-family: var(--font-logo); font-size: 3rem; color: var(--primary);
+            transform: translateX(100vw); animation: slideExplode 2s forwards ease-in-out;
+        }
+        @keyframes slideExplode {
+            0% { transform: translateX(100vw) scale(1); opacity: 0; }
+            50% { transform: translateX(0) scale(1.2); opacity: 1; }
+            80% { transform: scale(5); opacity: 0.5; filter: blur(10px); }
+            100% { transform: scale(10); opacity: 0; visibility: hidden; }
+        }
 
-        .sidebar { position: fixed; top: 0; width: 290px; height: 100%; background: var(--sidebar-bg); z-index: 4000; transition: 0.5s; visibility: hidden; padding: 30px; }
-        #html-tag[dir="ltr"] .sidebar { left: -350px; }
-        #html-tag[dir="ltr"] .sidebar.active { left: 0; visibility: visible; }
-        #html-tag[dir="rtl"] .sidebar { right: -350px; left: auto; }
-        #html-tag[dir="rtl"] .sidebar.active { right: 0; visibility: visible; }
-        
-        #toast-container { position: fixed; top: 80px; right: 20px; z-index: 9999; }
-        .toast { background: var(--primary); color: white; padding: 15px 25px; border-radius: 12px; margin-bottom: 10px; animation: slideIn 0.4s forwards; }
-        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+        /* 2. الهيدر واللوجو */
+        nav { 
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass);
+        }
+        .logo { font-family: var(--font-logo); font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--primary); filter: drop-shadow(0 0 8px var(--primary)); }
 
-        .btn-main { background: var(--primary); color: white; width: 100%; padding: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        
-        #profile-section { display: none; padding: 40px 20px; max-width: 600px; margin: 40px auto; text-align: center; }
-        .profile-pic-container img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 5px solid var(--primary); margin-bottom: 15px; }
+        /* 3. الأزرار الملونة والإعدادات */
+        .sidebar {
+            position: fixed; top: 0; width: 320px; height: 100%; background: #0a0a0a;
+            z-index: 5000; transition: 0.5s; padding: 25px; border-inline-start: 1px solid var(--primary);
+        }
+        #html-tag[dir="rtl"] .sidebar { left: -350px; }
+        #html-tag[dir="rtl"] .sidebar.active { left: 0; }
+        #html-tag[dir="ltr"] .sidebar { right: -350px; }
+        #html-tag[dir="ltr"] .sidebar.active { right: 0; }
 
-        footer { padding: 40px; text-align: center; opacity: 0.7; }
+        .btn-close { color: var(--accent); font-size: 24px; cursor: pointer; float: left; }
+        .btn-logout { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; margin-top: 20px; cursor: pointer; }
+
+        /* 4. قسم التسجيل (Google & FB) */
+        .auth-container { max-width: 400px; margin: 50px auto; padding: 30px; border-radius: 20px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); }
+        .social-btn { 
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;
+        }
+        .google-btn { background: white; color: #444; }
+        .fb-btn { background: #1877f2; color: white; }
+
+        /* 5. الأوبشنات الرئيسية */
+        .main-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 40px 5%; }
+        .option-card { 
+            background: var(--glass); padding: 25px; border-radius: 20px; text-align: center;
+            transition: 0.3s; border: 1px solid transparent; cursor: pointer;
+        }
+        .option-card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(153, 102, 204, 0.1); }
+        .option-card i { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
+
+        /* 6. صندوق الإشعارات */
+        .notif-box { 
+            position: fixed; top: 80px; left: 20px; width: 300px; background: #111; 
+            border-radius: 15px; padding: 15px; display: none; border: 1px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .notif-item { background: #222; padding: 10px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 13px; }
+        .notif-item i { color: var(--accent); cursor: pointer; }
+
+        /* الأفاتارات */
+        .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .avatar-img { width: 100%; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+        .avatar-img:hover { border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div id="preloader"><div class="loader-logo">RETAG AI <span>PLUS</span></div></div>
-    <div id="toast-container"></div>
-    <div class="mask" id="mask" onclick="toggleMenu()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:3500; backdrop-filter: blur(5px);"></div>
-
-    <nav>
-        <i class="fas fa-bars" onclick="toggleMenu()" style="color:white; font-size:24px; cursor:pointer"></i>
-        <div style="font-weight: bold; font-size: 24px; color: white; letter-spacing: 1px;">RETAG AI</div>
-        <img id="nav-p-img" src="https://via.placeholder.com/150" class="nav-user-img" onclick="showProfile()" style="display:none;">
-    </nav>
-
-    <div class="sidebar glass-card" id="sidebar">
-        <h2 id="m-title" style="border-bottom: 2px solid var(--primary); padding-bottom: 10px;">Settings</h2>
-        <div style="margin-top:20px;">
-            <div onclick="showProfile()" style="padding:15px; cursor:pointer"><i class="fas fa-user"></i> <span id="s-prof">Profile</span></div>
-            <div onclick="toggleTheme()" style="padding:15px; cursor:pointer"><i class="fas fa-moon"></i> <span id="s-theme">Theme</span></div>
-            <div style="padding:15px;">
-                <i class="fas fa-globe"></i>
-                <select onchange="changeLang(this.value)" id="lang-picker" style="background:transparent; border:none; color:inherit; font-weight:bold;">
-                    <option value="en">English</option>
-                    <option value="ar">العربية</option>
-                </select>
-            </div>
-            <div id="logout-btn" onclick="logout()" style="padding:15px; color:#ff4444; cursor:pointer; margin-top:30px; display:none;"><i class="fas fa-sign-out-alt"></i> Logout</div>
-        </div>
+    <div id="preloader">
+        <div class="loader-content">RETAG <i class="fas fa-bolt"></i> AI</div>
     </div>
 
-    <section id="login-section" style="padding: 60px 20px; display: flex; justify-content: center;">
-        <div class="login-container glass-card" style="padding:40px; width:100%; max-width:400px; text-align:center;">
-            <h2 id="l-title">Retag AI Login</h2>
-            <input type="email" id="email" placeholder="Email" style="width:100%; padding:15px; margin:10px 0; border-radius:12px; border:1px solid #ddd; background:rgba(255,255,255,0.1); color:var(--text); box-sizing:border-box;">
-            <input type="password" id="pass" placeholder="Password" style="width:100%; padding:15px; margin:10px 0; border-radius:12px; border:1px solid #ddd; background:rgba(255,255,255,0.1); color:var(--text); box-sizing:border-box;">
-            <button class="btn-main" onclick="finalizeLogin()">Sign In</button>
+    <nav>
+        <div class="logo">RETAG <i class="fas fa-bolt"></i> AI</div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <i class="fas fa-bell" onclick="toggleNotif()" style="cursor:pointer; color: var(--primary); font-size: 20px;"></i>
+            <div id="user-greeting" style="display:none; font-weight: bold;"></div>
+            <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer; font-size: 24px;"></i>
         </div>
+    </nav>
+
+    <div id="notif-box" class="notif-box">
+        <h4 id="n-title">الإشعارات</h4>
+        <div id="notif-list">
+            <div class="notif-item">مرحباً بك في النسخة البريميوم <i class="fas fa-trash"></i></div>
+        </div>
+        <hr>
+        <p style="font-size: 12px;">إعدادات الصوت:</p>
+        <select id="notif-sound" style="width:100%; background:#222; color:white; border:none; padding:5px;">
+            <option value="pop">Pop Tone</option>
+            <option value="crystal">Crystal</option>
+            <option value="none">بدون صوت</option>
+        </select>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <i class="fas fa-times btn-close" onclick="toggleMenu()"></i>
+        <h2 id="s-title" style="margin-top:40px;">الإعدادات</h2>
+        
+        <div class="sidebar-item" onclick="showSection('profile')"><i class="fas fa-user-astronaut"></i> <span id="s-acc">الحساب</span></div>
+        <div class="sidebar-item" onclick="showSection('security')"><i class="fas fa-shield-halved"></i> <span id="s-sec">الأمان</span></div>
+        
+        <div style="margin-top:20px;">
+            <label id="s-lang">اللغة:</label>
+            <select onchange="changeLang(this.value)" style="width:100%; padding:10px; background:#1a1a1a; color:white; border-radius:8px; border:1px solid var(--primary);">
+                <option value="ar">🇪🇬 العربية</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="fr">🇫🇷 Français</option>
+            </select>
+        </div>
+
+        <button class="btn-logout" onclick="logout()"><i class="fas fa-power-off"></i> <span id="s-out">تسجيل الخروج</span></button>
+    </div>
+
+    <section id="hero-section" style="text-align:center; padding: 60px 5%;">
+        <h1 id="h-welcome">مستقبلك يبدأ مع Retag AI</h1>
+        <p id="h-desc" style="opacity: 0.8; max-width: 600px; margin: auto;">المنصة الأولى عالمياً لإصلاح الأكواد، توليد المحتوى الذكي، وإدارة ملفاتك بتقنيات الذكاء الاصطناعي الفائقة.</p>
     </section>
 
-    <section id="profile-section" class="glass-card">
-        <img id="profile-display" src="https://via.placeholder.com/150" style="width:130px; height:130px; border-radius:50%; border:5px solid var(--primary);">
-        <h2 id="user-display-name">User</h2>
-        <div style="padding:20px;">
-            <input type="text" id="edit-name" placeholder="New Name" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; background:transparent; color:var(--text);">
-            <button class="btn-main" onclick="saveProfile()">Save</button>
-            <p style="margin-top:20px;">AI Usage: <span id="ai-count">0</span></p>
-            <button class="btn-main" style="background:#888; margin-top:10px;" onclick="location.reload()">Back</button>
-        </div>
+    <section id="login-section" class="auth-container">
+        <h2 id="l-title" style="text-align:center;">دخول المحترفين</h2>
+        <button class="social-btn google-btn" onclick="socialLogin('Google')"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="20"> Continue with Google</button>
+        <button class="social-btn fb-btn" onclick="socialLogin('Facebook')"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+        
+        <div style="margin: 20px 0; text-align: center; opacity: 0.5;">أو عبر البريد</div>
+        <input type="email" id="u-email" placeholder="Email" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; background:rgba(255,255,255,0.05); color:white; border:1px solid #333;">
+        <input type="password" id="u-pass" placeholder="Password" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; background:rgba(255,255,255,0.05); color:white; border:1px solid #333;">
+        <button class="btn-main" onclick="finalizeLogin()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">دخول</button>
+        <p onclick="forgotPass()" style="text-align:center; font-size:13px; color:var(--primary); cursor:pointer; margin-top:15px;" id="l-forgot">نسيت كلمة المرور؟</p>
     </section>
 
-    <section id="options-section" style="display:none; padding:40px 20px; text-align:center;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px; max-width:1000px; margin:auto;">
-            <div class="glass-card" style="padding:40px;">
-                <i class="fas fa-robot" style="font-size:40px; color:var(--primary); margin-bottom:15px;"></i>
-                <h3>Start Retag AI</h3>
-                <button class="btn-main" onclick="useAI()">Launch Chat</button>
+    <section id="main-options" style="display:none;">
+        <div class="main-grid">
+            <div class="option-card" onclick="trackUsage('ai')">
+                <i class="fas fa-brain"></i>
+                <h3 id="opt-ai">Retag Chat AI</h3>
+                <p id="opt-ai-d">مساعد ذكي للإجابة على كل تساؤلاتك.</p>
+            </div>
+            <div class="option-card" onclick="trackUsage('code')">
+                <i class="fas fa-code"></i>
+                <h3 id="opt-code">Code Fixer</h3>
+                <p id="opt-code-d">حدد السطر الخاطئ وأصلحه فوراً.</p>
+            </div>
+            <div class="option-card" onclick="trackUsage('upload')">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3 id="opt-up">Media Upload</h3>
+                <p id="opt-up-d">ارفع صورك وفيديوهاتك لتحليلها ذكياً.</p>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p id="copy">All Rights Reserved © 2026</p>
-        <p><strong>Developed by Retag Khaled</strong></p>
-    </footer>
+    <section id="profile-section" style="display:none; padding:40px 5%; max-width:600px; margin:auto;">
+        <div class="glass-card" style="padding:30px; text-align:center; background: var(--glass); border-radius: 20px;">
+            <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" style="width:120px; border-radius:50%; border:3px solid var(--primary);">
+            <h2 id="display-name">User Name</h2>
+            
+            <h4>اختر أفاتار مضحك:</h4>
+            <div class="avatar-grid">
+                <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=1" onclick="changeAvatar(this.src)">
+                <img class="avatar-img" src="https://api.dicebear.com/7.x/adventurer/svg?seed=2" onclick="changeAvatar(this.src)">
+                <img class="avatar-img" src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=3" onclick="changeAvatar(this.src)">
+            </div>
+
+            <div style="margin-top:30px; text-align:right;">
+                <p>🚀 استخدام الذكاء: <span id="count-ai">0</span></p>
+                <p>🛠 إصلاح الأكواد: <span id="count-code">0</span></p>
+                <p>📥 ملفات مرفوعة: <span id="count-up">0</span></p>
+            </div>
+            <button class="btn-logout" style="background:#444;" onclick="hideAll()">العودة للرئيسية</button>
+        </div>
+    </section>
 
     <script>
-        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 1000); });
+        // 1. Loading & Intro
+        window.addEventListener('load', () => {
+            setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 2000);
+        });
 
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerText = msg;
-            document.getElementById('toast-container').appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 3000);
-        }
-
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-            document.getElementById('mask').style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-        }
-
+        // 2. Auth Logic
         function finalizeLogin() {
+            const email = document.getElementById('u-email').value;
+            const name = email.split('@')[0];
+            localStorage.setItem('userName', name);
             localStorage.setItem('isLoggedIn', 'true');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            showToast("Welcome to Retag AI");
-            setTimeout(() => location.reload(), 2000);
+            showLoadingAndRedirect(name);
         }
 
-        function useAI() {
-            let count = parseInt(localStorage.getItem('aiUsage') || 0);
-            localStorage.setItem('aiUsage', ++count);
-            document.getElementById('ai-count').innerText = count;
-            showToast("AI Ready!");
+        function socialLogin(platform) {
+            alert(`جاري الاتصال بـ ${platform}... سيتم فتح نافذة المتابعة باسمك.`);
+            localStorage.setItem('userName', 'Retag User');
+            localStorage.setItem('isLoggedIn', 'true');
+            showLoadingAndRedirect('Retag User');
         }
 
-        function logout() { localStorage.removeItem('isLoggedIn'); location.reload(); }
-        function showProfile() { document.getElementById('profile-section').style.display = 'block'; document.getElementById('options-section').style.display = 'none'; document.getElementById('login-section').style.display = 'none'; toggleMenu(); }
-        function saveProfile() { const name = document.getElementById('edit-name').value; if(name) { localStorage.setItem('userName', name); showToast("Updated!"); setTimeout(() => location.reload(), 1000); } }
-        function toggleTheme() { const isDark = document.body.getAttribute('data-theme') === 'dark'; document.body.setAttribute('data-theme', isDark ? 'light' : 'dark'); localStorage.setItem('theme', isDark ? 'light' : 'dark'); showToast("Theme Updated"); }
-        function changeLang(lang) { localStorage.setItem('lang', lang); document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr'); showToast("Language Updated"); }
+        function showLoadingAndRedirect(name) {
+            document.body.innerHTML = `<div style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#000;">
+                <h1 class="loader-logo" style="color:var(--primary)">Loading...</h1>
+            </div>`;
+            setTimeout(() => { location.reload(); }, 1500);
+        }
 
+        function forgotPass() {
+            const contact = prompt("أدخل الجيميل أو رقم الهاتف لإرسال كود التحقق (WhatsApp/SMS):");
+            if(contact) alert("تم إرسال كود التحقق بنجاح! يرجى فحص رسائلك.");
+        }
+
+        // 3. UI Functions
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        function toggleNotif() { 
+            const box = document.getElementById('notif-box');
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function trackUsage(type) {
+            let count = parseInt(localStorage.getItem('count-' + type) || 0);
+            localStorage.setItem('count-' + type, ++count);
+            alert("جاري تشغيل المعالج... تم تسجيل الاستخدام.");
+            location.reload();
+        }
+
+        function changeAvatar(src) {
+            localStorage.setItem('userAvatar', src);
+            document.getElementById('user-avatar').src = src;
+        }
+
+        // 4. Multi-language
+        const langs = {
+            ar: { welcome: "هاي", h1: "مستقبلك يبدأ مع Retag AI", out: "خروج", lang: "اللغة" },
+            en: { welcome: "Hi", h1: "Future starts with Retag AI", out: "Logout", lang: "Language" },
+            fr: { welcome: "Salut", h1: "L'avenir commence avec Retag AI", out: "Déconnexion", lang: "Langue" }
+        };
+
+        function changeLang(l) {
+            localStorage.setItem('lang', l);
+            location.reload();
+        }
+
+        // Init
         document.addEventListener('DOMContentLoaded', () => {
-            if(localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
-            const lang = localStorage.getItem('lang') || 'en';
-            document.getElementById('lang-picker').value = lang;
-            document.getElementById('html-tag').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            const name = localStorage.getItem('userName');
+            const lang = localStorage.getItem('lang') || 'ar';
+            document.getElementById('html-tag').dir = lang === 'ar' ? 'rtl' : 'ltr';
             
             if(localStorage.getItem('isLoggedIn')) {
                 document.getElementById('login-section').style.display = 'none';
-                document.getElementById('options-section').style.display = 'block';
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('nav-p-img').style.display = 'block';
-                document.getElementById('ai-count').innerText = localStorage.getItem('aiUsage') || 0;
-                document.getElementById('user-display-name').innerText = localStorage.getItem('userName') || 'User';
+                document.getElementById('hero-section').style.display = 'none';
+                document.getElementById('main-options').style.display = 'block';
+                document.getElementById('user-greeting').style.display = 'block';
+                document.getElementById('user-greeting').innerHTML = `${langs[lang].welcome} ${name} 👋`;
+                
+                // Load stats
+                document.getElementById('count-ai').innerText = localStorage.getItem('count-ai') || 0;
+                document.getElementById('count-code').innerText = localStorage.getItem('count-code') || 0;
+                document.getElementById('count-up').innerText = localStorage.getItem('count-up') || 0;
+                document.getElementById('user-avatar').src = localStorage.getItem('userAvatar') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix';
+                document.getElementById('display-name').innerText = name;
             }
         });
+
+        function logout() { localStorage.clear(); location.reload(); }
+        function showSection(s) { 
+            if(s === 'profile') {
+                document.getElementById('profile-section').style.display = 'block';
+                document.getElementById('main-options').style.display = 'none';
+                toggleMenu();
+            }
+        }
+        function hideAll() { document.getElementById('profile-section').style.display = 'none'; document.getElementById('main-options').style.display = 'block'; }
     </script>
 </body>
 </html>
