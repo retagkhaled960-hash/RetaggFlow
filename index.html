@@ -100,8 +100,9 @@
     <div id="login-page" style="padding: 80px 5%; text-align: center;">
         <div style="max-width:400px; margin:auto; background:var(--c); padding:35px; border-radius:30px; border:1px solid var(--card-border);">
             <h2 id="txt-log-h" style="margin-bottom:25px;">مرحباً بكِ مجدداً</h2>
-            <button onclick="openPopup('acc-popup', 'Google')" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--card-border); background:#fff; color:#333; font-weight:bold; cursor:pointer; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fab fa-google" style="color:#db4437"></i> Sign in with Google</button>
-            <button onclick="openPopup('acc-popup', 'Facebook')" style="width:100%; padding:14px; border-radius:12px; border:none; background:#1877f2; color:#fff; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+        <button onclick="openPopup('acc-popup')" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--card-border); background:#fff; color:#333; font-weight:bold; cursor:pointer; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:10px;">
+    <i class="fab fa-google" style="color:#db4437"></i> Sign in with Google
+</button>
             
             <p style="margin:25px 0 10px; font-size:13px; opacity:0.6;">أو الدخول اليدوي</p>
             <input type="password" placeholder="كلمة المرور" id="pass-field">
@@ -145,7 +146,10 @@
             fr: { hi:"Salut", sets:"Paramètres", logH:"Bienvenue", c1t:"Retag Chat AI", c1d:"Chat IA avancé", c2t:"Réparateur de code", c2d:"Détecter les erreurs", c3t:"Image Generator", c3d:"Générer de l'art IA" }
         };
 
-        function openPopup(id, type) { if(type) document.getElementById('pop-title').innerText = "Continue to " + type; document.getElementById(id).style.display = 'block'; }
+        function openPopup(id) { 
+    document.getElementById('pop-title').innerText = "Choose an account";
+    document.getElementById(id).style.display = 'block'; 
+}
         function closePopup(id) { document.getElementById(id).style.display = 'none'; }
         
         function setTheme(t) { document.getElementById('html-tag').setAttribute('data-theme', t); localStorage.setItem('theme', t); }
